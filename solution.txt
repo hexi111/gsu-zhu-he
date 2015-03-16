@@ -1,0 +1,3 @@
+Subversion OSX error with SCPlugin: "Server certificate verification failed: certificate issued for a different hostname, issuer is not trusted" for code.google.com SVN server 
+
+/Library/Contextual\ Menu\ Items/SCFinderPlugin.plugin/Contents/Resources/SCPluginUIDaemon.app/Contents/bin/svn ls https://gsu-zhu-he.googlecode.com/svn/trunk/

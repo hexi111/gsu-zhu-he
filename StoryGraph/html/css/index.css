@@ -1,0 +1,19 @@
+html, body, #map-canvas {
+	height: 100%;
+	margin: 0px;
+    padding: 0px
+}
+#inputpanel{
+	width:100%;
+	display:none;
+	margin:1px;
+}
+#gsheet{
+	width:20px
+}
+#address{
+	width:65%;
+}
+#submit{
+	width:80px;
+}

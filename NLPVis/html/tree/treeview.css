@@ -1,0 +1,49 @@
+body{
+	background-image: url("../css/images/ui-bg_fine-grain_15_ffffff_60x60.png");
+}
+
+#tabs {
+	height:250px;
+	width:800px;
+	border: 1px solid #c3c3c3;
+	/*
+	background-color:#e1e0d3;
+	background-image: url("../css/images/ui-bg_fine-grain_10_eceadf_60x60.png");
+	*/
+	/*
+	padding-right: 2px;
+    padding-left: 2px;
+	*/
+	margin-left: auto;
+    margin-right: auto;
+    display:none;
+}
+
+#settings {
+}
+
+#svg {
+	width:auto;
+	border: 1px solid #c3c3c3;
+	background-image: url("../css/images/ui-bg_fine-grain_10_f8f7f6_60x60.png");
+}
+
+.node {
+	cursor: pointer;
+}
+
+.node circle {
+	fill: #fff;
+	stroke: steelblue;
+	stroke-width: 2px;
+}
+
+.node text {
+	font: 14px sans-serif;
+}
+
+.link {
+	fill: none;
+	stroke: #ccc;
+	stroke-width: 1.5px;
+}

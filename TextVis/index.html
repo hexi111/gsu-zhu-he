@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>TextVis</title>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script>
+            var data;
+            var treeData;
+            $(document).ready(function() {                  	// When the HTML DOM is ready loading, then execute the following function...
+				$('button#parseButton').click(function() {               // Locate HTML DOM element with ID "somebutton" and assign the following function to its "click" event...
+                    //$.get('textVisServlet?input='+$('textarea#input').val(), function(responseText) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response text...
+                    $.post('textVisServlet','input='+$('textarea#input').val(), function(responseText) {
+                       //$('#somediv').text(responseText);         // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
+                    	data=responseText;
+                    	alert("Done. Please press the show button to display the result");
+    				});
+                });            
+                $('button#showButton').click(function() {               
+					$('#somediv').text(JSON.stringify(data)); 
+					var tmp="";
+					$.each(data, function(i, sentences) {
+						$.each(sentences.parsedSentences,function(j,words){
+							$.each(words.words,function(k,word){
+								tmp+=word.posTag;
+								tmp+=" ";
+							})
+							tmp+="\n";
+						})
+						tmp+="\n\n";
+					});
+					$('textarea#output').val(tmp);
+					treeData=data[0].parsedSentences[0].treePresentation;
+					//$('#treeRep').text(treeData); 
+					//$('#treeRep').text(JSON.stringify(treeData)); 
+					$("#tree").text("Show the first parsed tree");
+					$("a").attr("href", "tree.html?tree="+treeData);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        
+        <textarea rows="20" cols="70" id="input" name="textFrom"></textarea>
+        
+        <textarea rows="20" cols="70" id="output" name="textTo"></textarea>
+        
+        <br/><br/>
+
+        <button id="parseButton">Parse</button>
+               
+        <button id="showButton">Show</button><br/><br/>
+        
+		<!--em><b>The Jason file is as follows:</b></em-->
+        <div id="treeRep"></div>
+        <a href="tree.html" id="tree" target="_blank_">No Data</a>
+        <div id="somediv"></div>
+    </body>
+</html>

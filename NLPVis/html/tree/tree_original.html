@@ -1,0 +1,282 @@
+<!-- This program is adapted from Mike Bostock's Collapsible Tree example http://bl.ocks.org/mbostock/4339083
+ Ying Zhu 
+ Georgia State University 
+ November 2013
+ 
+ This example shows how you can customize the output of the tree layout to suite your special need. 
+ In this case, I need to place the nodes (words) from left to right in the same order as they appear in the sentence. 
+ I also need to generate and display a longer label for a collapsed node.  
+ -->
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 14px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+</style>
+<body>
+
+<script src="d3.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<script>
+
+var margin = {top: 20, right: 30, bottom: 20, left:30},
+    width = 1200 - margin.right - margin.left,
+    height = 500 - margin.top - margin.bottom;
+    
+var i = 0,
+    duration = 700,
+    root;
+
+// Create a tree layout
+var tree = d3.layout.tree()
+    .size([width,height]);
+
+// Draw the tree horizontally, from left to right
+var diagonal = d3.svg.diagonal()
+    .projection(function(d) { return [d.x, d.y]; });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.right + margin.left)
+    .attr("height", height + margin.top + margin.bottom)
+	.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.select(self.frameElement).style("height", "800px");
+
+//str='{"name":"S","children":[{"name":"NP","children":[{"name":"PRP","children":[{"name":"I"}]}]},{"name":"AA","children":[{"name":"aa"}]},{"name":"BB","children":[{"name":"bb"}]},{"name":"CC","children":[{"name":"cc"}]},{"name":"DD","children":[{"name":"dd"}]}]}' ;
+//str='{"name": "","children":[{"name":"S","children":[{"name":"NP","children":[{"name":"PRP","children":[{"name":"I"}]}]},{"name":"VP","children":[{"name":"VBP","children":[{"name":"love"}]},{"name":"NP","children":[{"name":"PRP","children":[{"name":"you"}]}]}]},{"name":".","children":[{"name":"."}]}]}]}' ;
+//data={'name': '','children':[{'name':'S','children':[{'name':'NP','children':[{'name':'PRP','children':[{'name':'I'}]}]},{'name':'VP','children':[{'name':'VBP','children':[{'name':'love'}]},{'name':'NP','children':[{'name':'PRP','children':[{'name':'you'}]}]}]},{'name':'.','children':[{'name':'.'}]}]}]};
+str=getURLParameter("tree");
+data=JSON.parse(str);
+// Load data file
+//d3.json("sentence3.json", function(error, flare) {
+  	//root = flare;
+  	root=data;
+  	console.log(root);
+  	console.log(data);
+  	root.x0 = width / 2;
+	root.y0 = 0;
+
+	// At the beginning, collapse everything into the root node
+	// root.children.forEach(collapse); 
+  
+	// Draw the graph
+	update(root);
+	// Finished loading data file
+//}); 
+
+function collapse(d) {
+	if (d.children) {
+		d._children = d.children; // Hide all the children in d._children.
+		d._children.forEach(collapse);  // Do this recursively!
+		d.children = null;  // pretend there is no children
+	}
+}
+
+//*************************
+// Recalculate node positions
+function update(source) {
+
+  // Compute the new tree layout.
+  // Note that all the nodes are expanded here.
+  var nodes = tree.nodes(root),
+      links = tree.links(nodes);
+
+  // Calculate the y coordinates based on the position of the word in the sentence 	  
+  // in order to display words from left to right in the same order as in the sentence. 
+  // Replace the y coordinates calculated by the tree layout algorithm with my own calculation, 
+  // while keeping the x coordinates. 
+  
+  /*
+  nodes.forEach(function(d, i) { var horizontal_coord = 0;
+	                             for(var index=0; index<i; index++) {
+								    if (nodes[index].name.length > 0) {
+									    // Calculate the horizontal coordinates based on
+										// how many characters are before it in the sentence.
+										horizontal_coord += nodes[index].name.length * 10;
+									} else {
+										horizontal_coord += 15;
+									}
+								 }
+								 // This the horizontal starting position of this node. 
+								 // The vertical position is calculated by the tree layout algorithm.
+								 d.y = horizontal_coord;
+								 
+								 // save the original name of the node in d._name
+								 d._name = d.name;});
+*/								
+ 
+ nodes.forEach(function(d, i) {
+ 	//d.y = d.depth * 180;
+ 	d._name = d.name;
+ 	});	
+ 	
+  // Update the nodes
+  // Assign each node an id, but it's unclear what the id is used for. 
+  var node = svg.selectAll("g.node")
+      .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+  // Enter any new nodes at the parent's previous position, but don't draw them yet. 
+  var nodeEnter = node.enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; })
+      .on("click", click);
+
+  // Display collapsed nodes as filled circles, and expanded nodes as hollow circles. 
+  nodeEnter.append("circle")
+      .attr("r", 1e-6) // But don't display the circle yet
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  // If the node is collapsed, display the concatenated string of this and all child nodes.
+  // If the node is expanded, display only the name for this node. 
+  var generateLabel = function(d) { 
+						 if(d._children) { // If the node is collapsed
+							var name_collapsed_node = d.name + " ";
+						 
+							// Concatenate strings from the child nodes 
+							function getName(d) {
+								name_collapsed_node += d.name + " ";
+								if(d.children) 
+									d.children.forEach(getName);
+								else if(d._children)
+									d._children.forEach(getName);
+							}
+							
+							d._children.forEach(getName);
+							// Display the (long) concatenated string of this and all child nodes
+							// when the node is collapsed. 
+							return name_collapsed_node;
+						 } else {
+						    // Display the (short) original name when the node is 
+							// expanded. 
+							return d._name; 
+						 }
+					}
+					
+  // Create the label for each new node.  
+  // Note that the node that is clicked on is not a new node, therefore
+  // the text for the clicked node is not updated here. 
+  nodeEnter.append("text")
+      .attr("x", function(d) { return 2; })
+	  .attr("y", function(d) { return -10; })
+      .attr("dy", ".35em")
+      .attr("text-anchor", function(d) { return "start"; })
+      .text(generateLabel)
+      .style("fill-opacity", 1e-6); // Don't display the text yet. 
+
+  // Add tooltip for each node	  
+  nodeEnter.append("svg:title");	  
+  
+  // Transition nodes to their new position, creating the animation effect.
+  var nodeUpdate = node.transition()
+      .duration(duration)
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+  // Now draw the all the circles (old and new) after the transition or animation.  
+  nodeUpdate.select("circle")
+      .attr("r", 4.5)
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  // Now draw all the texts (old and new) after the transition or animation.
+  // The text of the node that is clicked on is updated here. 
+  // If the node is expanded, then display the short label (it's original name). 
+  // If the node is collapsed, then display the long label (
+  nodeUpdate.select("text")
+      .style("fill-opacity", 1)
+	  .text(generateLabel);
+
+  // Update tooltip text for each node	  
+  nodeUpdate.select("title").text(generateLabel);
+
+  // Transition exiting nodes to the parent's new position.
+  var nodeExit = node.exit().transition()
+      .duration(duration)
+      .attr("transform", function(d) { return "translate(" + source.x + "," + source.y + ")"; })
+      .remove();
+
+  nodeExit.select("circle")
+      .attr("r", 1e-6);
+
+  nodeExit.select("text")
+      .style("fill-opacity", 1e-6);
+
+  // Update the links
+  var link = svg.selectAll("path.link")
+      .data(links, function(d) { return d.target.id; });
+
+  // Enter any new links at the parent's previous position.
+  link.enter().insert("path", "g")
+      .attr("class", "link")
+      .attr("d", function(d) {
+        var o = {x: source.x0, y: source.y0};
+        return diagonal({source: o, target: o});
+      });
+
+  // Transition links to their new position.
+  link.transition()
+      .duration(duration)
+      .attr("d", diagonal);
+
+  // Transition exiting links to the parent's new position.
+  link.exit().transition()
+      .duration(duration)
+      .attr("d", function(d) {
+        var o = {x: source.x, y: source.y};
+        return diagonal({source: o, target: o});
+      })
+      .remove();
+
+  // Stash the old positions for transition.
+  nodes.forEach(function(d) {
+    d.x0 = d.x;
+    d.y0 = d.y;
+  });
+}  // End of update
+
+// Toggle children on click.
+function click(d) {
+  if (d.children) {
+    // If the node is expanded, then collapse it. 
+	// Hide all the children in d._children. 
+    d._children = d.children;  
+	// Pretend there is no child. 
+    d.children = null;
+  } else {
+    // If the node is collapsed, then expand it. 
+	// Restore all the children to d.children. 
+    d.children = d._children; 
+    d._children = null;
+  }
+  
+  // Recalculate the location of node d, its parent, and its children. 
+  update(d);
+}
+
+function getURLParameter(name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+}
+
+</script>

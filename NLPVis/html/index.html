@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Text X-Ray: Corpus Visualization (beta)</title>
+<link rel="stylesheet" href="css/jquery-ui.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/evol.colorpicker.css">
+<link rel="stylesheet" href="css/index.css">
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script src="js/cook.js"></script>
+<script src="js/index.js"></script>
+<script src="js/helper.js"></script>
+<script src="js/barNew.js"></script>
+<!--script src='js/spectrum.js'></script-->
+<!--link rel='stylesheet' href='css/spectrum.css' /-->
+<script src="js/evol.colorpicker.js"></script>
+</head>
+
+<body>
+<div id="dialog" title="Invalid input"></div>
+<div id="progressbar"><div class="progress-label">Loading...</div></div>
+<div id="pagewrapper">
+	<div id="showArticle">		
+		<div id="accordionA"> 
+			<h3><span id="title1" >Text</span><span style="float:right"><img onclick="javascript:myfunction1()" src="images/icon1.png" width="25" height="25"/> <img onclick="javascript:myfunction2()" src="images/icon2.png" width="25" height="25"/> <img onclick="javascript:myfunction3()" src="images/icon3.png" width="25" height="25"/> </span></h3>
+			<div id="accordion1">
+			<p></p>
+			</div>
+		</div> <!-- end of accordion -->
+	</div>
+	
+	<div id="tabs">
+		<ul >
+		<li id="tab1" ><a href="#tabs-1">Articles</a></li>
+		<!--li id="tab2"><a href="#tabs-2">Clustering</a></li-->
+		<!--li><a href="#tabs-3">TBD</a></li-->
+		<div id="toolbar">
+			<button id="beginning">beginning</button>
+			<button id="rewind">prev</button>
+			<button id="forward">next</button>
+			<button id="end">end</button>
+			<input  type="text" id="inputpages"></input>
+			<button id="search">Go</button>
+		</div>
+		</ul>
+
+		<div id="tabs-1">
+			<!--div id="inner-tabs-container" style="border: 2px solid blue;"-->
+				<div id="a11">
+				</div>
+				<div id="a12">
+				</div>
+				<div id="a21">
+				</div>
+				<div id="a22">
+				</div>
+			<!--/div-->
+		</div>
+		<!--div id="tabs-2">
+		<p> </p>
+		</div-->
+		<!--
+		<div id="tabs-3">
+		<p>Empty</p>
+		</div>
+		--> 
+	</div> <!-- end of tabs -->
+	
+	<div id="content">
+		<div id="accordion"> 
+			<h3>Color Code</h3>
+			<div id="accordion4">
+				<div id="radio">
+				<p>Choose to display either word speech or word frequency.</p>
+				<input type="radio" name="words" value="speech" checked>Speech
+				<input type="radio" name="words" value="frequency">Frequency
+				</div>
+				<br/>
+				<!--VERB, NOUN, ADJ, ADV, IN, CC, EX, PRP, WP, WRB, UNKNOWN-->
+				<div id="speech">
+				
+				
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >VERB:</label>
+					<input style="width:0px" type="hidden" id="mycolor1" class="colorPicker evo-cp0"></input>
+					</div>   
+			
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >NOUN:</label>
+					<input style="width:0px" type="hidden" id="mycolor2" class="colorPicker evo-cp0"></input>
+					</div> 
+			
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >ADJ:</label>
+					<input style="width:0px" type="hidden" id="mycolor3" class="colorPicker evo-cp0"></input>
+					</div>   
+			
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >ADV:</label>
+					<input style="width:0px" type="hidden" id="mycolor4" class="colorPicker evo-cp0"></input>
+					</div>   
+								
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >&nbsp;&nbsp;IN:</label>
+					<input style="width:0px" type="hidden" id="mycolor5" class="colorPicker evo-cp0"></input>
+					</div>   
+			
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >&nbsp;&nbsp;CC:</label>
+					<input style="width:0px" type="hidden" id="mycolor6" class="colorPicker evo-cp0"></input>
+					</div> 
+			
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >&nbsp;&nbsp;EX:</label>
+					<input style="width:0px" type="hidden" id="mycolor7" class="colorPicker evo-cp0"></input>
+					</div>   
+			
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >PRP:</label>
+					<input style="width:0px" type="hidden" id="mycolor8" class="colorPicker evo-cp0"></input>
+					</div> 
+			
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >&nbsp;&nbsp;WP:</label>
+					<input style="width:0px" type="hidden" id="mycolor9" class="colorPicker evo-cp0"></input>
+					</div> 
+			
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >&nbsp;&nbsp;WRB:</label>
+					<input style="width:0px" type="hidden" id="mycolor10" class="colorPicker evo-cp0"></input>
+					</div>   
+			
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >MISC:</label>
+					<input style="width:0px" type="hidden" id="mycolor11" class="colorPicker evo-cp0"></input>
+					</div> 
+
+				</div>
+				<div id="frequency">
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >&lt;10K</label>
+					<input style="width:0px" type="hidden" id="mycolorf1" class="colorPicker evo-cp0"></input>
+					</div> 
+			
+					<div style="width:75px;height:60px;float:left;border: 0px solid;">
+					<label >10K~100K</label>
+					<input style="width:0px" type="hidden" id="mycolorf2" class="colorPicker evo-cp0"></input>
+					</div>   
+			
+					<div style="width:85px;height:60px;float:left;border: 0px solid;">
+					<label >100K~1M</label>
+					<input style="width:0px" type="hidden" id="mycolorf3" class="colorPicker evo-cp0"></input>
+					</div>
+					
+					<div style="width:65px;height:60px;float:left;border: 0px solid;">
+					<label >1M~10M</label>
+					<input style="width:0px" type="hidden" id="mycolorf4" class="colorPicker evo-cp0"></input>
+					</div>   
+			
+					<div style="width:75px;height:60px;float:left;border: 0px solid;">
+					<label >&gt10M</label>
+					<input style="width:0px" type="hidden" id="mycolorf5" class="colorPicker evo-cp0"></input>
+					</div>
+					
+					<div style="width:85px;height:60px;float:left;border: 0px solid;">
+					<label >Others</label>
+					<input style="width:0px" type="hidden" id="mycolorf6" class="colorPicker evo-cp0"></input>
+					</div> 
+					<!--
+					&nbsp;&nbsp;<label  class="speechLabel">&lt;9999&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><input type='text' id="freq1" /><br/><br/>
+					&nbsp;&nbsp;<label  class="speechLabel">10000~99999&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><input type='text' id="freq2" /><br/><br/>
+					&nbsp;&nbsp;<label  class="speechLabel">100000~999999&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><input type='text' id="freq3" /><br/><br/>
+					&nbsp;&nbsp;<label  class="speechLabel">1000000~9999999&nbsp;&nbsp;&nbsp;</label><input type='text' id="freq4" /><br/><br/>
+					&nbsp;&nbsp;<label  class="speechLabel"> &gt;10000000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><input type='text' id="freq5" /><br/><br/>
+					&nbsp;&nbsp;<label  class="speechLabel"> MISC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><input type='text' id="freq6" /><br/><br/>
+					-->
+				</div>
+			</div>
+			<h3><span id="title2">Statistics</span></h3>
+			<div id="accordion2">
+			<!--p></p-->
+			</div>
+			<h3>Article Layout</h3>
+			<div id="accordion3">
+			<!--p></p-->
+			</div>
+			<h3>Corpus Management</h3>
+			<div id="accordion5">
+			<!--p></p-->
+			</div>
+		</div> <!-- end of accordion -->
+	</div> <!-- end of content -->
+
+</div>  <!-- end of pagewrapper -->
+
+<div id="append_dialog" title="Append a new article">
+<form>
+<fieldset>
+<center>
+<input type="text" name="articletitle" id="articletitle" value="Put the title here" class="text ui-widget-content ui-corner-all">
+<!--label for="content">Content</label-->
+<br/><br/>
+<textarea rows="4" cols="50" name="articlecontent" id="articlecontent">Put the content here</textarea> 
+</center>
+<!-- Allow form submission with keyboard without duplicating the dialog button -->
+<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+</fieldset>
+</form>
+</div>
+
+<div id="import_dialog" title="Import a new corpus">
+<form>
+<fieldset>
+<input type="text" name="corpustitle" id="corpustitle" value="Put the corpus name here" class="text ui-widget-content ui-corner-all">
+<label id="warning1"></label>
+<!--label for="content">Content</label-->
+<br/><br/>
+<label id="uploadlable">Upload the corpus file (.zip)</label> 
+<input type="file" id="corpusfile" name="corpusfile" /><label id="warning2"></label>
+<!-- Allow form submission with keyboard without duplicating the dialog button -->
+<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+</fieldset>
+</form>
+</div>
+
+</body>
+
+</html>

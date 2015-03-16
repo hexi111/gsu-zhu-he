@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tree View of the Parsed Sentence</title>
+<script src="d3.js"></script>
+<link rel="stylesheet" href="../css/jquery-ui.css">
+<link rel="stylesheet" href="../css/theme.css">
+<script src="../js/jquery.js"></script>
+<script src="../js/jquery-ui.js"></script> 
+<link rel='stylesheet' href='treeview.css' />
+<script src='treeview.js'></script>
+<link rel="stylesheet" href="../css/evol.colorpicker.css">
+<script src="../js/evol.colorpicker.js"></script>
+<script src="../js/cook.js"></script>
+</head>
+
+
+<body>
+
+<div id="tabs">
+	<ul >
+	<li id="tab1" ><a href="#tabs-1">Sizes</a></li>
+	<li id="tab2"><a href="#tabs-2">Color</a></li>
+	<li><a href="#tabs-3">MISC</a></li>
+	</ul>
+
+	<div id="tabs-1">
+		<p>
+			<label for="widthamount">Width:</label>
+			<input type="text" id="widthamount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+		</p>
+		<div id="slider-range-max-width"></div>
+		<p>
+			<label for="heightamount">Height:</label>
+			<input type="text" id="heightamount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+		</p>
+		<div id="slider-range-max-height"></div>
+	</div>
+	<div id="tabs-2">
+   			
+	<div id="radio">
+	<p>Choose to display either word speech or word frequency.</p>
+	<input type="radio" name="words" value="speech" checked>Speech
+	<input type="radio" name="words" value="frequency">Frequency
+	</div>
+	<br/>
+
+	<div id="speech">
+
+		<div style="width:60px;height:50px;float:left;border: 0px solid;">
+		<label >VERB:</label>
+		<input style="width:0px" type="hidden" id="mycolor1" class="colorPicker evo-cp0"></input>
+		</div>   
+	
+		<div style="width:75px;height:50px;float:left;border: 0px solid;">
+		<label >NOUN:</label>
+		<input style="width:0px" type="hidden" id="mycolor2" class="colorPicker evo-cp0"></input>
+		</div> 
+	
+		<div style="width:65px;height:50px;float:left;border: 0px solid;">
+		<label >ADJ:</label>
+		<input style="width:0px" type="hidden" id="mycolor3" class="colorPicker evo-cp0"></input>
+		</div>   
+	
+		<div style="width:65px;height:50px;float:left;border: 0px solid;">
+		<label >ADV:</label>
+		<input style="width:0px" type="hidden" id="mycolor4" class="colorPicker evo-cp0"></input>
+		</div>   
+	
+		<div style="width:65px;height:50px;float:left;border: 0px solid;">
+		<label >&nbsp;&nbsp;IN:</label>
+		<input style="width:0px" type="hidden" id="mycolor5" class="colorPicker evo-cp0"></input>
+		</div>   
+	
+		<div style="width:65px;height:50px;float:left;border: 0px solid;">
+		<label >&nbsp;&nbsp;CC:</label>
+		<input style="width:0px" type="hidden" id="mycolor6" class="colorPicker evo-cp0"></input>
+		</div> 
+	
+		<div style="width:65px;height:50px;float:left;border: 0px solid;">
+		<label >&nbsp;&nbsp;EX:</label>
+		<input style="width:0px" type="hidden" id="mycolor7" class="colorPicker evo-cp0"></input>
+		</div>   
+	
+		<div style="width:65px;height:50px;float:left;border: 0px solid;">
+		<label >PRP:</label>
+		<input style="width:0px" type="hidden" id="mycolor8" class="colorPicker evo-cp0"></input>
+		</div> 
+	
+		<div style="width:65px;height:50px;float:left;border: 0px solid;">
+		<label >&nbsp;&nbsp;WP:</label>
+		<input style="width:0px" type="hidden" id="mycolor9" class="colorPicker evo-cp0"></input>
+		</div> 
+	
+		<div style="width:65px;height:50px;float:left;border: 0px solid;">
+		<label >&nbsp;&nbsp;WRB:</label>
+		<input style="width:0px" type="hidden" id="mycolor10" class="colorPicker evo-cp0"></input>
+		</div>   
+	
+		<div style="width:60px;height:50px;float:left;border: 0px solid;">
+		<label >MISC:</label>
+		<input style="width:0px" type="hidden" id="mycolor11" class="colorPicker evo-cp0"></input>
+		</div>  
+		
+	</div>
+	
+	<div id="frequency">
+		<div style="width:65px;height:60px;float:left;border: 0px solid;">
+		<label >&lt;10K</label>
+		<input style="width:0px" type="hidden" id="mycolorf1" class="colorPicker evo-cp0"></input>
+		</div> 
+
+		<div style="width:75px;height:60px;float:left;border: 0px solid;">
+		<label >10K~100K</label>
+		<input style="width:0px" type="hidden" id="mycolorf2" class="colorPicker evo-cp0"></input>
+		</div>   
+
+		<div style="width:85px;height:60px;float:left;border: 0px solid;">
+		<label >100K~1M</label>
+		<input style="width:0px" type="hidden" id="mycolorf3" class="colorPicker evo-cp0"></input>
+		</div>
+		
+		<div style="width:65px;height:60px;float:left;border: 0px solid;">
+		<label >1M~10M</label>
+		<input style="width:0px" type="hidden" id="mycolorf4" class="colorPicker evo-cp0"></input>
+		</div>   
+
+		<div style="width:75px;height:60px;float:left;border: 0px solid;">
+		<label >&gt10M</label>
+		<input style="width:0px" type="hidden" id="mycolorf5" class="colorPicker evo-cp0"></input>
+		</div>
+		
+		<div style="width:85px;height:60px;float:left;border: 0px solid;">
+		<label >Others</label>
+		<input style="width:0px" type="hidden" id="mycolorf6" class="colorPicker evo-cp0"></input>
+		</div> 
+
+	</div>  
+		
+ 
+		
+            <!--br/> 	
+            <br/>
+            
+            <div style="width:60px;height:50px;float:left;border: 0px solid;">
+   			<label >ADJP:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS1" class="colorPicker evo-cp0"></input>
+            </div>   
+            
+            <div style="width:75px;height:50px;float:left;border: 0px solid;">
+   			<label >ADVP:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS2" class="colorPicker evo-cp0"></input>
+            </div> 
+            
+            <div style="width:65px;height:50px;float:left;border: 0px solid;">
+   			<label >&nbsp;&nbsp;NP:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS3" class="colorPicker evo-cp0"></input>
+            </div>   
+            
+            <div style="width:65px;height:50px;float:left;border: 0px solid;">
+   			<label >&nbsp;&nbsp;PP:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS4" class="colorPicker evo-cp0"></input>
+            </div>   
+            
+            <div style="width:65px;height:50px;float:left;border: 0px solid;">
+   			<label >&nbsp;&nbsp;&nbsp;S:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS5" class="colorPicker evo-cp0"></input>
+            </div> 
+            
+            <div style="width:65px;height:50px;float:left;border: 0px solid;">
+   			<label >SBAR:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS6" class="colorPicker evo-cp0"></input>
+            </div> 
+            
+            <div style="width:65px;height:50px;float:left;border: 0px solid;">
+   			<label >SBARQ:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS7" class="colorPicker evo-cp0"></input>
+            </div>   
+            
+            <div style="width:65px;height:50px;float:left;border: 0px solid;">
+   			<label >SINV:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS8" class="colorPicker evo-cp0"></input>
+            </div> 
+            
+            <div style="width:65px;height:50px;float:left;border: 0px solid;">
+   			<label >&nbsp;&nbsp;SQ:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS9" class="colorPicker evo-cp0"></input>
+            </div> 
+            
+            <div style="width:65px;height:50px;float:left;border: 0px solid;">
+   			<label >&nbsp;&nbsp;VP:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS10" class="colorPicker evo-cp0"></input>
+            </div>   
+            
+            <div style="width:60px;height:50px;float:left;border: 0px solid;">
+   			<label >WHADVP:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS11" class="colorPicker evo-cp0"></input>
+            </div>  
+            
+            <div style="width:65px;height:50px;float:left;border: 0px solid;">
+   			<label >WHNP:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS12" class="colorPicker evo-cp0"></input>
+            </div> 
+            
+            <div style="width:70px;height:50px;float:left;border: 0px solid;">
+   			<label >WHPP:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS13" class="colorPicker evo-cp0"></input>
+            </div>
+            
+            <div style="width:75px;height:50px;float:left;border: 0px solid;">
+   			<label >Others:</label>
+   			<input style="width:0px" type="hidden" id="mycolorS14" class="colorPicker evo-cp0"></input>
+            </div--> 
+    </div>
+	<div id="tabs-3">
+		<input type="radio" name="treealg" value="indented" checked>Indented Level-Based Tree Drawing Algorithm <a href="https://dl.dropboxusercontent.com/u/9780529/indented_level_based.pdf"><b>Paper</b></a>
+		<br/>
+		<input type="radio" name="treealg" value="regular">Regular Level-Based Tree Drawing Algorithm (Horizonal) <a href="https://dl.dropboxusercontent.com/u/9780529/regular_level_based.pdf"><b>Paper</b></a>
+		<br/>
+		<input type="radio" name="treealg" value="regular2">Regular Level-Based Tree Drawing Algorithm (Vertical) <a href="https://dl.dropboxusercontent.com/u/9780529/regular_level_based.pdf"><b>Paper</b></a>
+
+		<hr/>
+		<input type="checkbox" name="postext" value="show" id="checkboxPOS" unchecked > Display POS tags<br>
+	</div>
+
+</div> <!-- end of tabs -->
+
+<center>
+<button id="settings">Settings</button>
+</center>
+<br/>
+<div id="svg">
+
+</div>
+</body>
+</html>
