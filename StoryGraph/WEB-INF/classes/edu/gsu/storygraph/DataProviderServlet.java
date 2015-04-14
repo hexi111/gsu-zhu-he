@@ -145,6 +145,7 @@ public class DataProviderServlet extends HttpServlet{
 				List <ListEntry> rows = listFeed.getEntries();
 				HashMap<OneRecord, OneRecord> detector=new HashMap<OneRecord, OneRecord>();
 				int sum=0;
+				int id=0;
 				//System.out.println("rowsize="+rows.size());
 				for(int index=0;index<rows.size();index++){
 					Set<String> tags=rows.get(index).getCustomElements().getTags();
@@ -172,13 +173,14 @@ public class DataProviderServlet extends HttpServlet{
 						}
 						//ARS.setTitles(builder.substring(0,builder.length()-1)+System.getProperty("line.separator"));
 						//ARS.setTitles(builder.toString()+System.getProperty("line.separator"));
-						builder.append("secretcolumn|");
+						builder.append("secretcolumn|id");
 						ARS.setTitles(builder.toString()+"|");
 					}
 					//else
 						{
 						try{
-							OneRecord OR=new OneRecord();
+							OneRecord OR=new OneRecord(id);
+							id++;
 							StringBuilder content=new StringBuilder();
 							OR.setLatitude(new Double(rows.get(index).getCustomElements().getValue("latitude")).doubleValue());
 							OR.setLongitude(new Double(rows.get(index).getCustomElements().getValue("longitude")).doubleValue());
@@ -261,7 +263,11 @@ public class DataProviderServlet extends HttpServlet{
 		private double longitude;
 		private String content;
 		private int counter=0;
+		private int id;
 		
+		public OneRecord(int id){
+			this.id=id;	
+		}
 		public void add(){
 			counter++;
 		}
@@ -297,7 +303,7 @@ public class DataProviderServlet extends HttpServlet{
 		}
 		public String toString(){
 			//return this.content+System.getProperty("line.separator");
-			return this.content+counter+"|"+"|";
+			return this.content+counter+"|"+"s"+this.id+"|"+"|";
 		}
 	}
 	

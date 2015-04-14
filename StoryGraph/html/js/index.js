@@ -3,6 +3,10 @@ var lat1;
 var lat2;
 var lng1;
 var lng2;
+var oldLat1=0.0;
+var oldLat2=0.0;
+var oldLng1=0.0;
+var oldLng2=0.0;
 var records;
 var centerLat;
 var centerLon;
@@ -20,11 +24,12 @@ $(document).ready(function() {
 		text: true
 	})
 	.click(function() {
-		alert($("#address").val());
+		//alert($("#address").val());
 		loadData("address="+$("#address").val());
     	//$("#tabs").slideToggle("slow");
-	});                
-	loadData("address=https://docs.google.com/spreadsheets/d/1eYKe2YsOw_MaJerhWE87ueRoQMB-zdZeb06EoAeNlJE/edit#gid=139711139");
+	});
+	loadData("address=https://docs.google.com/spreadsheets/d/1fyMKzhyv64nUIofZ0EKRPlplbqsLR7LZyQncCMG887Q/edit#gid=902398098");                
+	//loadData("address=https://docs.google.com/spreadsheets/d/1eYKe2YsOw_MaJerhWE87ueRoQMB-zdZeb06EoAeNlJE/edit#gid=139711139");
 	//loadData("address=https://docs.google.com/spreadsheet/ccc?key=0AtNtVAG_C-1KdHJRYWNSallkSkx4cElUSnEtU21UWHc&usp=sheets_web#gid=0");
 	/*
 	$.ajax({
@@ -42,7 +47,7 @@ $(document).ready(function() {
 
 function loadData(address){
 	$.post('/StoryGraph/dataProviderServlet',address ,function(responseText) {
-		console.log(responseText);
+		//console.log(responseText);
 		var returnCode=Number(responseText.returncode);
 		if(returnCode==1){
 			alert("The address is not correct.");
@@ -58,11 +63,11 @@ function loadData(address){
 		}
 		else {
 			var str=responseText.content.replace(/\|\|/g,"\n");
-			console.log(str);
+			//console.log(str);
 			//records = $.csv.toObjects(data);
 			var dsv = d3.dsv("|", "text/plain");
 			records=dsv.parse(str);
-			console.log(records);
+			//console.log(records);
 			centerLat=responseText.centerLat;
 			centerLon=responseText.centerLon;
 			key=responseText.key;
@@ -93,14 +98,16 @@ function initialize() {
 	
 	var dz = map.getDragZoomObject();
 	google.maps.event.addListener(dz, 'dragend', function(bnds) {
-		console.log('DragZoom DragEnd :' + bnds);
+		//console.log('DragZoom DragEnd :' + bnds);
 		var southWest = bnds.getSouthWest();
 		var northEast = bnds.getNorthEast();
 		lat1=southWest.lat();
 		lat2=northEast.lat();
 		lng1=southWest.lng();
 		lng2=northEast.lng();
-		console.log(lat1+","+lat2+","+lng1+","+lng2);
+	
+		//console.log(lat1+","+lat2+","+lng1+","+lng2);
+		/*
 		records.forEach(function(element,index){
 			if((element["latitude"]>=lat1)&&(element["latitude"]<=lat2)&&(element["longitude"]>=lng1)&&(element["longitude"]<=lng2)){
 				var str;
@@ -109,32 +116,94 @@ function initialize() {
 				str=str+'<p> Longitude: '+element.longitude+'</p>';
 				console.log(str);
 			}
-		});	
-		window.open("storygraph.html?key="+key+"&lat1="+lat1+"&lat2="+lat2+"&lon1="+lng1+"&lon2="+lng2, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=0, left=0, width="+window.innerWidth+", height="+window.innerHeight);      	
+		});
+		*/
+			
+		//window.open("storygraph.html?key="+key+"&lat1="+lat1+"&lat2="+lat2+"&lon1="+lng1+"&lon2="+lng2, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=0, left=0, width="+window.innerWidth+", height="+window.innerHeight);      	
+		console.log("oldLat1="+oldLat1+"oldLat2="+oldLat2+"oldLng1="+oldLng1+"oldLng2="+oldLng2);
+		console.log("lat1="+lat1+"lat2="+lat2+"lng1="+lng1+"lng2="+lng2);
+		if((lat1>=oldLat1)&&(oldLat2>=lat2)&&(oldLng1<=lng1)&&(oldLng2>=lng2)){
+			localStorage.lat1=lat1;
+			localStorage.lat2=lat2;	
+			localStorage.lng1=lng1;
+			localStorage.lng2=lng2;	
+		}
+		else{
+			var link2="storygraph1.html?key="+key+"$lat1="+lat1+"$lat2="+lat2+"$lon1="+lng1+"$lon2="+lng2;
+			var link1="storygraph.html?key="+key+"&lat1="+lat1+"&lat2="+lat2+"&lon1="+lng1+"&lon2="+lng2+"&link="+link2;
+			window.open(link1," _blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=0, left=0, width="+window.innerWidth+", height="+window.innerHeight);      	
+    		oldLat1=lat1;
+    		oldLat2=lat2;
+    		oldLng1=lng1;
+    		oldLng2=lng2;
+    	}
     });
     
 	var infowindows=[];
 	var markers=[];
 	var myLatLngs=[]; 
-	var image = 'images/dot.png';
+	var image1 = 'images/blackdot.png';
+	var image2 = 'images/reddot.png';
+	var image3 = 'images/bluedot.png';
+	var image4 = 'images/yellowdot.png';
+	//var image1 = 'images/dot.png';
 
 	records.forEach(function(element,index){	
-		var str;
-		str='<p> Time: '+element.date+'</p>';
-		str=str+'<p> Latitude: '+element.latitude+'</p>';
-		str=str+'<p> Longitude: '+element.longitude+'</p>';
-		infowindows[index] = new google.maps.InfoWindow({
-			  content: str
-		}); 
-		myLatLngs[index] = new google.maps.LatLng(element["latitude"], element["longitude"]);
-		markers[index]= new google.maps.Marker({
-			position: myLatLngs[index],
-			map: map,
-			icon: image
-		});
-		google.maps.event.addListener(markers[index], 'click', function() {
-			infowindows[index].open(map,markers[index]);
-		});  	
+		if(element["secretcolumn"]>0){
+			if(element["secretcolumn"]>=9){
+				image=image4;
+			}
+			else if(element["secretcolumn"]>=6){
+				image=image3;
+			}
+			else if(element["secretcolumn"]>=3){
+				image=image2;
+			}
+			else{
+				image=image1;
+			}
+			var str;
+			str="";
+			//str='<p> Time: '+element.date+'</p>';
+			str=str+'<p> Latitude: '+element.latitude+'</p>';
+			str=str+'<p> Longitude: '+element.longitude+'</p>';
+			str=str+'<p> # of events '+element.secretcolumn+'</p>';
+			
+			infowindows[index] = new google.maps.InfoWindow({
+				  content: str
+			}); 
+			myLatLngs[index] = new google.maps.LatLng(element["latitude"], element["longitude"]);
+			markers[index]= new google.maps.Marker({
+				position: myLatLngs[index],
+				map: map,
+				icon: image
+			});
+			//markers[index].id=element["id"];
+			markers[index].latitude=element.latitude;
+			markers[index].longitude=element.longitude;
+			google.maps.event.addListener(markers[index], 'click', function() {
+				infowindows[index].open(map,markers[index]);
+				//localStorage.id=markers[index].id;
+				//console.log("id="+localStorage.id);
+			});  
+			google.maps.event.addListener(markers[index], 'dblclick', function() {
+				//localStorage.id=markers[index].id;
+				//console.log("id="+localStorage.id);
+				localStorage.latitude=markers[index].latitude;
+				localStorage.longitude=markers[index].longitude;
+				console.log("latitude="+localStorage.latitude);
+				console.log("longitude="+localStorage.longitude);
+			});
+			google.maps.event.addListener(markers[index], 'mouseover', function() {
+				//localStorage.id=markers[index].id;
+				//console.log("id="+localStorage.id);
+				//alert("over");
+			});
+			google.maps.event.addListener(markers[index], 'mouseout', function() {
+				//alert("out");
+				//localStorage.removeItem("id");
+			});
+		}
 	});
 
 	/*

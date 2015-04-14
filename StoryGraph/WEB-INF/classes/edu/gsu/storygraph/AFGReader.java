@@ -11,7 +11,12 @@ import java.util.Scanner;
 public class AFGReader {
 
 	public static void main(String [] args) {
-		
+		//transform1();
+		//transform2();
+		transform3();
+	}
+	
+	public static void transform1(){
 		try{
 			BufferedReader fp=new BufferedReader(new FileReader(".."+File.separator+"data"+File.separator+"afg.csv"));
 			BufferedWriter bw=new BufferedWriter(new FileWriter(".."+File.separator+"data"+File.separator+"afg_output.csv"));
@@ -135,5 +140,230 @@ public class AFGReader {
 		catch(IOException e){
 			System.out.println("File not found!");
 		}
+	}
+	public static void transform2(){
+				try{
+			BufferedReader fp=new BufferedReader(new FileReader(".."+File.separator+"data"+File.separator+"afg.csv"));
+			BufferedWriter bw=new BufferedWriter(new FileWriter(".."+File.separator+"data"+File.separator+"afg_2004.csv"));
+			//System.out.println("the first line is "+fp.readLine());
+			String str=fp.readLine();
+			int seq=0;
+			bw.write("date");
+			bw.write(",");
+			bw.write("type");
+			bw.write(",");
+			bw.write("category");
+			bw.write(",");
+			bw.write("latitude");
+			bw.write(",");
+			bw.write("longitude");
+			bw.newLine();
+			while(str!=null){
+				Scanner s =new Scanner(str);
+				String theDate;
+				s.useDelimiter(",");
+				if(s.hasNext()){
+					theDate=s.next();
+				}
+				else{
+					str=fp.readLine();
+					continue;
+				}	
+				int loc=theDate.indexOf("/");
+				int loc1=theDate.indexOf("/",(loc+1));
+				String month=theDate.substring(0,loc);
+				if(month.length()==1){
+					month="0"+month;
+				}
+				String day=theDate.substring((loc+1),loc1);
+				if(day.length()==1){
+					day="0"+day;
+				}
+				String year=theDate.substring(loc1+1,loc1+5);
+
+				String type;
+				if(s.hasNext()){
+					type=s.next();
+				}
+				else{
+					str=fp.readLine();
+					continue;
+				}
+				String category;
+				if(s.hasNext()){
+					category=s.next();
+				}	
+				else{
+					str=fp.readLine();
+					continue;
+				}	
+				String latitude;	
+				if(s.hasNext()){
+					latitude=s.next();
+				}	
+				else{
+					str=fp.readLine();
+					continue;
+				}	
+				String longitude;
+				if(s.hasNext()){
+					longitude=s.next();
+				}	
+				else{
+					str=fp.readLine();
+					continue;
+				}
+				//if((year.equals("2004"))&&(month.equals("01"))){	
+				if(year.equals("2004")){	
+					bw.write(theDate);
+					bw.write(",");
+					bw.write(type);
+					bw.write(",");
+					bw.write(category);
+					bw.write(",");
+					bw.write(latitude);
+					bw.write(",");
+					bw.write(longitude);
+					bw.newLine();
+					str=fp.readLine();
+					seq++;
+				}
+				else{
+					str=fp.readLine();
+					continue;
+				}
+				//System.out.println("seq="+seq);
+				//break;
+			}
+			fp.close();
+			bw.close();
+		}
+		catch(IOException e){
+			System.out.println("File not found!");
+		}
 	}	
+	
+	public static void transform3(){
+		
+		try{
+			BufferedReader fp=new BufferedReader(new FileReader(".."+File.separator+"data"+File.separator+"lao.csv"));
+			BufferedWriter bw=new BufferedWriter(new FileWriter(".."+File.separator+"data"+File.separator+"lao_clean.csv"));
+			//System.out.println("the first line is "+fp.readLine());
+			String str=fp.readLine();
+			int seq=0;
+			bw.write("latitude");
+			bw.write(",");
+			bw.write("longitude");
+			bw.write(",");
+			bw.write("date");
+			bw.write(",");
+			bw.write("event");
+			bw.newLine();
+			while(str!=null){
+				Scanner s =new Scanner(str);
+				s.useDelimiter(",");
+
+				String latitude;	
+				if(s.hasNext()){
+					latitude=s.next().trim();
+				}	
+				else{
+					str=fp.readLine();
+					continue;
+				}	
+				String longitude;
+				if(s.hasNext()){
+					longitude=s.next().trim();
+				}	
+				else{
+					str=fp.readLine();
+					continue;
+				}
+				String theDate;
+				if(s.hasNext()){
+					theDate=s.next();
+				}
+				else{
+					str=fp.readLine();
+					continue;
+				}	
+				int loc=theDate.indexOf("/");
+				int loc1=theDate.indexOf("/",(loc+1));
+				//System.out.println("date="+theDate+" loc="+loc);
+				String month=theDate.substring(0,loc);
+				if(month.length()==1){
+					month="0"+month;
+				}
+				String day=theDate.substring((loc+1),loc1);
+				if(day.length()==1){
+					day="0"+day;
+				}
+				String year=theDate.substring(loc1+1,loc1+5);
+				theDate=theDate+" 0:00:00";
+				
+				String event;
+				String event1;
+				if(s.hasNext()){
+					event=s.next();
+				}	
+				else{
+					str=fp.readLine();
+					continue;
+				}	
+				
+				if(s.hasNext()){
+					event1=s.next();
+					event=event+" "+event1;
+				}	
+				else{
+					str=fp.readLine();
+					continue;
+				}
+				
+				if(s.hasNext()){
+					event1=s.next();
+					event=event+" "+event1;
+				}	
+				else{
+					str=fp.readLine();
+					continue;
+				}
+				
+				if(s.hasNext()){
+					event1=s.next();
+					event=event+" "+event1;
+				}	
+				else{
+					str=fp.readLine();
+					continue;
+				}
+
+				//if((year.equals("2004"))&&(month.equals("01"))){	
+				if((new Integer(year)).intValue()<=1970){	
+
+					bw.write(latitude);
+					bw.write(",");
+					bw.write(longitude);
+					bw.write(",");
+					bw.write(theDate);
+					bw.write(",");
+					bw.write(event);
+					bw.newLine();
+					str=fp.readLine();
+					seq++;
+				}
+				else{
+					str=fp.readLine();
+					continue;
+				}
+				//System.out.println("seq="+seq);
+				//break;
+			}
+			fp.close();
+			bw.close();
+		}
+		catch(IOException e){
+			System.out.println("File not found!");
+		}	
+	}
 }

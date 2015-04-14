@@ -26,9 +26,14 @@ function getURLParameter(name) {
 
 $(document).ready(function() {                 
     $.post('/StoryGraph/dataProviderServlet',"key="+getURLParameter("key")+"&lat1="+getURLParameter("lat1")+"&lat2="+getURLParameter("lat2")+"&lon1="+getURLParameter("lon1")+"&lon2="+getURLParameter("lon2") ,function(responseText) {
-		console.log(responseText);
+		var str=getURLParameter("link").replace(/\$/g,"\&");
+		//console.log(str);
+		$("#link2").attr('href', str);
+		//	window.open(str," _blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=0, left=0, width="+window.innerWidth+", height="+window.innerHeight);
+		//});
+		//console.log(responseText);
 		var str=responseText.content.replace(/\|\|/g,"\n");
-		console.log(str);
+		//console.log(str);
 		//records = $.csv.toObjects(data);
 		var dsv = d3.dsv("|", "text/plain");
 		records=dsv.parse(str);
@@ -64,7 +69,7 @@ function drawAxes(){
 	//console.log("width= "+width+", height= "+height); 
 	
 	var y1 = d3.scale.linear()
-		.range([0, height-height_margin-height_yaxe-height_axe]);
+		.range([height-height_margin-height_yaxe-height_axe,0]);
 	y1.domain([latMin,latMax]);
 
 	//console.log(latMax);
@@ -80,7 +85,7 @@ function drawAxes(){
 	//y1Axis.tickFormat(d3.format(",.000f"));
 
 	var y2 = d3.scale.linear()
-		.range([0, height-height_margin-height_yaxe-height_axe]);
+		.range([height-height_margin-height_yaxe-height_axe,0]);
 	y2.domain([lonMin,lonMax]);
 
 	var y2Axis = d3.svg.axis()
@@ -152,7 +157,7 @@ function dataClean(){
 		//console.log(datevar);
 		return datevar;
 	});
-	console.log(dateMax);
+	//console.log(dateMax);
 	dateMin=d3.min(records,function(d){
 		//return d.date1;
 		var format = d3.time.format("%m/%d/%Y %H:%M");
@@ -160,7 +165,7 @@ function dataClean(){
 		//console.log(datevar);
 		return datevar;
 	});
-	console.log(dateMin);
+	//console.log(dateMin);
 	//var dateMin=d3.min(records,function(d){return d.longitude});
 }
 
@@ -179,11 +184,11 @@ function drawLines(){
 				.attr("y2", y2);    // y position of the second end of the line
 		}
 		else{
-			console.log("repeat");
+			//console.log("repeat");
 		}
 		var format = d3.time.format("%m/%d/%Y %H:%M");
 		var t=format.parse(element["date"]);
-		console.log("index="+index+" "+x1+" "+y1+" "+x2+" "+y2+" "+t.getTime());
+		//console.log("index="+index+" "+x1+" "+y1+" "+x2+" "+y2+" "+t.getTime());
 		var x3=(t.getTime()-dateMin.getTime())*(width-width_margin-2*width_axe)/(dateMax.getTime()-dateMin.getTime())+width_axe;
 		var y3=(y2-y1)/(x2-x1)*(x3-x1)+y1;
 		d3.select("svg").append("circle")
@@ -191,7 +196,7 @@ function drawLines(){
 			.attr("cy", y3)
 			.attr("r",2)
 			.style("stroke", "red");
-		console.log("x3="+x3);
-		console.log("y3="+y3);
+		//console.log("x3="+x3);
+		//console.log("y3="+y3);
 	});
 }
