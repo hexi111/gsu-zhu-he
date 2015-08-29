@@ -1,0 +1,102 @@
+#content {
+	border: 0px solid; 
+	width:90.1%;
+	/*height 600px;*/
+	float: left;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
+#keyword {
+	border: 0px solid; 
+	width:9.3%;
+	/*height 600px;*/
+	float: right;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
+#input {
+	border: 0px solid; 
+	width:99.8%;
+	/*height 600px;
+	float: left;*/
+	float:left;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
+.xaxis path,
+.xaxis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.yaxis path,
+.yaxis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+
+#lable{
+	width:20px;
+	vertical-align:middle;
+}
+#question{
+	width:75%;
+	height:25px;
+	font-size:21px;
+	vertical-align:middle;
+}
+#submit{
+	width:80px;
+	vertical-align:middle;
+}
+#open{
+	width:80px;
+	vertical-align:middle;
+}
+
+.ui-progressbar {
+		position: relative;
+	}
+.progress-label {
+	position: absolute;
+	left: 40%;
+	top: 4px;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 #fff;
+}
+
+#progressbar{
+	position: fixed;
+	width:400px;
+}
+
+ .legend {
+	padding: 5px;
+	font: 10px sans-serif;
+	background: yellow;
+	box-shadow: 2px 2px 1px #888;
+}

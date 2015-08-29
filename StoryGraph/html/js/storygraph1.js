@@ -1,4 +1,5 @@
-var records;
+var records_sg;
+var records_sg_select;
 var latMax;
 var latMin;
 var lonMax;
@@ -9,12 +10,13 @@ var dateMin;
 var duration = 250;
 var width;
 var height;
-var width_margin=30;
+var width_margin=40;
 var height_margin=30;
 var width_axe=50;
 var height_axe=20;
 var height_yaxe=35;
 
+//var ifDrawed=0;
 var map;
 
 // This function is used to extract the parsed sentence from the passed html parameter.
@@ -24,104 +26,218 @@ function getURLParameter(name) {
     );
 }
 
-//var previousId;
-var preLatitude=-1.0;
-var preLongitude=-1.0;
-var preLat1=-1.0;
-var preLat2=-1.0;
-var preLng1=-1.0;
-var preLng2=-1.0;
-$(document).ready(function() {                 
-    $.post('/StoryGraph/dataProviderServlet',"key="+getURLParameter("key")+"&lat1="+getURLParameter("lat1")+"&lat2="+getURLParameter("lat2")+"&lon1="+getURLParameter("lon1")+"&lon2="+getURLParameter("lon2") ,function(responseText) {
-		//console.log(responseText);
-		var str=responseText.content.replace(/\|\|/g,"\n");
-		//console.log(str);
-		//records = $.csv.toObjects(data);
-		var dsv = d3.dsv("|", "text/plain");
-		records=dsv.parse(str);
-		dataClean();
-		drawAxes();
-		drawLines(); 
-		setInterval(function(){
-			
-			//console.log("previousId="+previousId);
-			//console.log("localStorage.id="+localStorage.id);
-			//console.log("preLatitude"+preLatitude);
-			//console.log("preLongitude"+preLongitude);
-			
-			/*
-			if((preLatitude!=null)&&(preLongitude!=null)){
-				d3.select("body").select("svg").selectAll("circle")
-				.attr("r",function(d){
-					return 2;
-				})
-				.style("stroke",function(d){
-					return red;
-				});
-			}
-			*/
- 			if((localStorage.latitude!=preLatitude)&&(localStorage.longitude!=preLongitude)){
- 				d3.select("body").select("svg").selectAll("circle")
-				.attr("r",function(d){
-					if((d.latitude==localStorage.latitude)&&(d.longitude==localStorage.longitude)){
-						return 3;
-					}
-					else{
-						return 2;
-					}
-				})
-				.style("stroke",function(d){
-					if((d.latitude==localStorage.latitude)&&(d.longitude==localStorage.longitude)){
-						return "blue";
-					}
-					else{
-						return "red";
-					}
-				});	
-				preLatitude=localStorage.latitude;
-				preLongitude=localStorage.longitude;
- 			} 
- 			
- 			if((localStorage.lat1!=preLat1)&&(localStorage.lat2!=preLat2)&(localStorage.lng1!=preLng1)&&(localStorage.lng2!=preLng2)){
- 				console.log("here");
-				console.log("lat1="+localStorage.lat1+"lat2="+localStorage.lat2+"lng1="+localStorage.lng1+"lng2="+localStorage.lng2); 			
- 				d3.select("body").select("svg").selectAll("circle")
-				.attr("r",function(d){
-					if((d.latitude>=localStorage.lat1)&&(d.latitude<=localStorage.lat2)&&(d.longitude>=localStorage.lng1)&&(d.longitude>=localStorage.lng2)){
-						console.log("latitude="+d.latitude+" longitude="+d.longitude);
-						return 3;
-					}
-					else{
-						return 2;
-					}
-				})
-				.style("stroke",function(d){
-					if((d.latitude>=localStorage.lat1)&&(d.latitude<=localStorage.lat2)&&(d.longitude>=localStorage.lng1)&&(d.longitude>=localStorage.lng2)){
-						console.log("latitude="+d.latitude+" longitude="+d.longitude);
-						return "blue";
-					}
-					else{
-						return "red";
-					}
-				});	
-				preLat1=localStorage.lat1;
-				preLat2=localStorage.lat2;
-				preLng1=localStorage.lng1;
-				preLng2=localStorage.lng2;
- 			} 
- 			
- 		}, 2000);
+function updateSG(date1,date2){
+	console.log("date1="+date1);
+	console.log("date2="+date2);
+	var format = d3.time.format("%m/%d/%Y %H:%M");
+	records_sg_select=[];
+	records_sg.forEach(function(element,index){
+		var dateTmp=format.parse(element["date"]);
+		if((dateTmp>=date1)&&(dateTmp<=date2)){
+			records_sg_select.push(element);
+		}		
 	});
 	
+	console.log("records_sg_select length="+records_sg_select.length);
+	
+	
+	tip= d3.tip()
+	.attr('class', 'd3-tip')
+	.offset([-10, 0])
+	.html(function(d) {
+		return "<span style='color:blue'>" + d.event+ "</span><strong> on </strong> <span style='color:blue'>" + d.date+ "</span>";
+	});
+	d3.select("body").select("svg").call(tip);
+	
+	d3.select("body").select("svg").selectAll(".myline").remove();
+	d3.select("body").select("svg").selectAll(".dot").remove();
+	
+
+	records_sg_select.forEach(function(element,index){
+		var x1=width_axe;
+		var y1=(element["latitude"]-latMin)*(height-height_margin-height_yaxe-height_axe)/(latMax-latMin)+height_axe;
+		var x2=(width-width_margin-width_axe);
+		//var y2=(element["longitude"]-lonMin)*(height-height_margin-height_yaxe-height_axe)/(lonMax-lonMin)+height_axe;
+		var y2=y1;
+		if(element["secretcolumn"]>0){
+			/*
+			var str="("+element["latitude"];
+			str=str+","+element["longitude"]+") ";
+			records_sg.forEach(function(e,i){
+				if((e.latitude==element["latitude"])&&(e.longitude==element["longitude"])){
+					str=str+" event:"+e.date;
+				}
+			});
+			*/
+			/*
+			tmp.forEach(function(d,index){
+				str=str+"event"+index+":"+d.time;  
+			});
+			*/
+			/*
+			var tooltip = d3.select("body")
+				.append("div")
+				.style("position", "absolute")
+				.style("z-index", "100")
+				.style("visibility", "hidden")
+				.text(str);
+			*/
+			d3.select("svg").append("line")          // attach a line
+				.style("stroke", "grey")  // colour the line
+				.attr("x1", x1)     // x position of the first end of the line
+				.attr("y1", y1)      // y position of the first end of the line
+				.attr("x2", x2)     // x position of the second end of the line
+				.attr("y2", y2)	    // y position of the second end of the line
+				.attr("class","myline")
+				.style("stroke-width",1) 
+				.on("click", function(d,i){
+			      //alert(element["latitude"]);
+				})
+				.on("mouseover",function(){
+					//tooltip.style("visibility", "visible");
+					//var marker=this.marker;
+					//var info=marker.infowindow;
+					//info.open(map,marker);
+					d3.select(this).style("stroke","blue").style("stroke-width",2);
+				})
+				.on("mouseout",function(d){
+					//tooltip.style("visibility", "hidden");
+					//var marker=this.marker;
+					//var info=marker.infowindow;
+					//info.close();
+					d3.select(this).style("stroke","grey").style("stroke-width",1);
+					//tip.hide();
+				});
+		}
+		else{
+			//console.log("repeat");
+		}
+	});
+	
+
+		//console.log("index="+index+" "+x1+" "+y1+" "+x2+" "+y2+" "+t.getTime());
+		d3.select("body").select("svg").selectAll(".dot").data(records_sg_select,function(d){
+			return d.id;
+		}).enter().append("circle")
+		.attr("cx", function(d){
+			var format = d3.time.format("%m/%d/%Y %H:%M");
+			var t=format.parse(d["date"]);
+			var x3=(t.getTime()-dateMin.getTime())*(width-width_margin-2*width_axe)/(dateMax.getTime()-dateMin.getTime())+width_axe;
+			return x3;
+		})
+		.attr("cy", function(d){
+			var format = d3.time.format("%m/%d/%Y %H:%M");
+			var t=format.parse(d["date"]);
+			var x3=(t.getTime()-dateMin.getTime())*(width-width_margin-2*width_axe)/(dateMax.getTime()-dateMin.getTime())+width_axe;
+			var x1=width_axe;
+			var y1=(d["latitude"]-latMin)*(height-height_margin-height_yaxe-height_axe)/(latMax-latMin)+height_axe;
+			var x2=(width-width_margin-width_axe);
+			var y2=y1;
+			var y3=(y2-y1)/(x2-x1)*(x3-x1)+y1;
+			return y3;
+		})
+		.attr("r",2)
+		.attr("class","dot")
+		.attr("id",function(d){
+			return d["id"];
+		})
+		.style("stroke", "blue")
+		.on("click", function(d,i){
+			 //d3.select(this).style("stroke", "blue");
+		})
+		.on('mouseover', tip.show)
+		//.on("mouseover",function(d){
+		//	tip.show();
+		//})
+		.on("mouseout",function(d){
+			tip.hide();
+		});
+	
+	/*
+	var circles=d3.select("body").select("svg").selectAll(".dot").data(records_sg,function(d1){
+			return d1.id;
+		});
+	
+	
+	//var circles=d3.select("body").select("svg").selectAll(".dot").data(records_sg_select);   
+   circles.enter().append("circle").attr("cx", function(d){
+		var format = d3.time.format("%m/%d/%Y %H:%M");
+		var t=format.parse(d["date"]);
+		var x3=(t.getTime()-dateMin.getTime())*(width-width_margin-2*width_axe)/(dateMax.getTime()-dateMin.getTime())+width_axe;
+		return x3;
+	})
+	.attr("cy", function(d){
+		var format = d3.time.format("%m/%d/%Y %H:%M");
+		var t=format.parse(d["date"]);
+		var x3=(t.getTime()-dateMin.getTime())*(width-width_margin-2*width_axe)/(dateMax.getTime()-dateMin.getTime())+width_axe;
+		var x1=width_axe;
+		var y1=(d["latitude"]-latMin)*(height-height_margin-height_yaxe-height_axe)/(latMax-latMin)+height_axe;
+		var x2=(width-width_margin-width_axe);
+		var y2=y1;
+		var y3=(y2-y1)/(x2-x1)*(x3-x1)+y1;
+		return y3;
+	})
+	.attr("r",2)
+	.attr("class","dot")
+	.attr("id",function(d){
+		return d["id"];
+	})
+	.style("stroke", "blue")
+	.on("click", function(d,i){
+		 //d3.select(this).style("stroke", "blue");
+	});
+	//.on('mouseover', tip.show)
+	//.on("mouseover",function(d){
+	//	tip.show();
+	//})
+	//.on("mouseout",function(d){
+	//	tip.hide();
+	//});
+	circles.exit()
+	.transition()
+   .duration(750)
+	.attr("r", 0)
+   .remove();
+   */
+   if((rightDate!=undefined)&&(leftDate!=undefined)){
+	   updateMarker();
+	}
+}
+
+function loadStoryGraph() {  
+	console.log("loadstorygraph");
+	//console.log("lat1="+lat1+" lat2="+lat2+" lon1="+lon1+" lon2="+lon2);               
+    //$.post('/StoryGraph/dataProviderServlet',"key="+key+"&lat1="+lat1+"&lat2="+lat2+"&lon1="+lon1+"&lon2="+lon2,function(responseText) {
+	records_sg=[];
+	records.forEach(function(element,index){
+		if((element["latitude"]>=lat1)&&(element["latitude"]<=lat2)&&(element["longitude"]>=lon1)&&(element["longitude"]<=lon2)){
+			records_sg.push(element);
+		}		
+	});
+	console.log("records_sg length="+records_sg.length);
+	//console.log(records_sg);
+	//console.log(responseText);
+	//var str=responseText.content.replace(/\|\|/g,"\n");
+	//console.log(str);
+	//records_sg = $.csv.toObjects(data);
+	//var dsv = d3.dsv("|", "text/plain");
+	//records_sg=dsv.parse(str);
+	//if(!ifDrawed){
+		dataClean1();
+		drawAxes1();
+	//}
+	drawLines1(); 
+	//});
+}	
 	/*
 	$.ajax({
 		type: "GET",
 		url: "afg_output.csv",
 		success: function(data) {
 			//console.log(csv);
-			records = $.csv.toObjects(data);
-			//console.log(records.length);
-			//console.log(records[0].year);
+			records_sg = $.csv.toObjects(data);
+			//console.log(records_sg.length);
+			//console.log(records_sg[0].year);
 			dataClean();
 			drawAxes();
 			drawLines(); 
@@ -130,12 +246,100 @@ $(document).ready(function() {
 		mimeType: "text/plain"
 	 });
 	 */	
-});
 
-function drawAxes(){
+var brush1;
+var handle1;
+var x;
+var brush2;
+var handle2;
+var leftDate;
+var rightDate;
+var tip;
+var changed=0;
 
-	width=window.innerWidth;
+function updateMarker(){
+	//var sum=0;
+	//var sum1=0;
+	for (var i = 0; i < markers.length; i++) {
+		if(markers[i]==undefined){
+			continue;
+		}
+		//console.log("i="+i+" date="+markers[i].date);
+		var format = d3.time.format("%m/%d/%Y %H:%M");
+		var t=format.parse(markers[i].date);
+		if((t>=leftDate)&&(t<=rightDate)){
+			markers[i].setMap(map);	
+			//sum++;	
+		}
+		else{
+			markers[i].setMap(null);
+			//sum1++;
+		}
+  	}
+  	//console.log("leftDate="+leftDate);
+  	//console.log("rightDate="+rightDate);
+  	//console.log("sum="+sum);
+  	//console.log("sum1="+sum1);
+}
+
+function brushed1() {
+  var value = brush1.extent()[0];
+
+  if (d3.event.sourceEvent) { // not a programmatic event
+    value = x.invert(d3.mouse(this)[0]);
+    brush1.extent([value, value]);
+  }
+  //console.log("x1(value)="+x(value));
+ 	
+  handle1.attr("cx", x(value));
+  //d3.select("body").style("background-color", d3.hsl(value, .8, .8));
+}
+
+function brushend1(){
+	changed=1;
+	var value = brush1.extent()[0];
+	if (d3.event.sourceEvent) { // not a programmatic event
+		value = x.invert(d3.mouse(this)[0]);
+		brush1.extent([value, value]);
+	}
+	console.log("brushend1");
+	leftDate=value;
+	updateSG(leftDate,rightDate);	
+}
+
+function brushed2() {
+  var value = brush2.extent()[0];
+
+  if (d3.event.sourceEvent) { // not a programmatic event
+    value = x.invert(d3.mouse(this)[0]);
+    brush2.extent([value, value]);
+  }
+	//console.log("x2(value)="+x(value));
+	
+  handle2.attr("cx", x(value));
+  //d3.select("body").style("background-color", d3.hsl(value, .8, .8));
+}
+
+function brushend2(){
+  changed=1;
+  var value = brush2.extent()[0];
+  if (d3.event.sourceEvent) { // not a programmatic event
+    value = x.invert(d3.mouse(this)[0]);
+    brush2.extent([value, value]);
+  }
+	console.log("brushend2");
+	rightDate=value;
+	updateSG(leftDate,rightDate);	
+}
+
+function drawAxes1(){
+
+	// for a data set, only draw this axe once.
+	//ifDrawed=1;
+
+	width=window.innerWidth/2-10;
 	height=window.innerHeight;
+	//width=$("content").width();
 	
 	//console.log("width= "+width+", height= "+height); 
 	
@@ -170,7 +374,7 @@ function drawAxes(){
 	y2Axis.ticks(0);
 	
 
-	var x = d3.time.scale()
+	x = d3.time.scale()
 		.range([0, width-width_margin-2*width_axe]);
 	x.domain([dateMin,dateMax]);
 
@@ -180,20 +384,91 @@ function drawAxes(){
 			
 	xAxis.innerTickSize(7);
 	xAxis.outerTickSize(2);
+	xAxis.tickPadding(25);
 	xAxis.tickFormat(d3.time.format('%m/%d'));
 	//xAxis.ticks(30);
 	
+	d3.select("#content").select("svg").remove();
 	var svg = d3.select("#content").append("svg")
 		.attr("width", width-width_margin)
-		.attr("height", height-height_margin);
+		.attr("height", height-height_margin+20);
 				  
 	svg.append("g")
 		.attr("class", "xaxis")
 		.attr("transform", "translate(" + (width_axe) + "," + (height-height_margin-height_yaxe) + ")");
-	 
+
+	/*
 	svg.selectAll(".xaxis").transition()
 	  .duration(duration)
 	  .call(xAxis)
+	*/
+	
+	svg.select(".xaxis").call(xAxis)  
+	.select(".domain")
+	.select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "halo");
+	
+	brush1 = d3.svg.brush()
+    .x(x)
+    .extent([dateMin, dateMin])
+    .on("brush", brushed1)
+    .on("brushend",brushend1);  
+      
+      
+    brush2 = d3.svg.brush()
+    .x(x)
+    .extent([dateMax, dateMax])
+    .on("brush", brushed2)
+    .on("brushend",brushend2);   
+      
+	var slider1 = svg.append("g")
+    .attr("class", "slider")
+    .attr("transform", "translate(" + (width_axe) + "," + (height-height_margin-height_yaxe) + ")")
+    .call(brush1)
+	
+	slider1.selectAll(".extent,.resize")
+    .remove();
+
+	slider1.select(".background")
+    .attr("height", 10);
+
+	var slider2 = svg.append("g")
+    .attr("class", "slider")
+    .attr("transform", "translate(" + (width_axe) + "," + (height-height_margin-height_yaxe+18) + ")")
+    .call(brush2)
+	
+	slider2.selectAll(".extent,.resize")
+    .remove();
+
+	slider2.select(".background")
+    .attr("height", 10);
+
+	handle1 = slider1.append("circle")
+    .attr("class", "handle1")
+    .attr("transform", "translate(0," + "8)")
+    .attr("r", 7);
+
+    handle2 = slider2.append("circle")
+    .attr("class", "handle2")
+    .attr("transform", "translate(0," + "8)")
+    .attr("r", 7);
+
+	slider1
+    .call(brush1.event)
+	.transition() // gratuitous intro!
+    .duration(750)
+    .call(brush1)
+    .call(brush1.event);
+
+	slider2
+    .call(brush2.event)
+	.transition() // gratuitous intro!
+    .duration(750)
+    .call(brush2)
+    .call(brush2.event);
+    	
+	//var axis = d3.svg.axis().orient("top").ticks(4);
+	//d3.select('.xaxis').call(d3.slider().axis(axis));
 	
 	svg.append("g")
 		.attr("class", "y1axis")
@@ -215,17 +490,17 @@ function drawAxes(){
 
 }
 
-function dataClean(){
+function dataClean1(){
 
-	latMax=d3.max(records,function(d){return d.latitude});
-	latMin=d3.min(records,function(d){return d.latitude});
+	latMax=d3.max(records_sg,function(d){return d.latitude});
+	latMin=d3.min(records_sg,function(d){return d.latitude});
 	//console.log(latMax);
 	//console.log(latMin);
-	lonMax=d3.max(records,function(d){return d.longitude});
-	lonMin=d3.min(records,function(d){return d.longitude});
+	lonMax=d3.max(records_sg,function(d){return d.longitude});
+	lonMin=d3.min(records_sg,function(d){return d.longitude});
 	//console.log(lonMax);
 	//console.log(lonMin);
-	dateMax=d3.max(records,function(d){
+	dateMax=d3.max(records_sg,function(d){
 		//return d.date1;
 		var format = d3.time.format("%m/%d/%Y %H:%M");
 		var datevar=format.parse(d.date);
@@ -233,67 +508,79 @@ function dataClean(){
 		return datevar;
 	});
 	//console.log(dateMax);
-	dateMin=d3.min(records,function(d){
+	dateMin=d3.min(records_sg,function(d){
 		//return d.date1;
 		var format = d3.time.format("%m/%d/%Y %H:%M");
 		var datevar=format.parse(d.date);
 		//console.log(datevar);
 		return datevar;
 	});
+	date1=dateMin;
+	date2=dateMax;
 	//console.log(dateMin);
-	//var dateMin=d3.min(records,function(d){return d.longitude});
+	//var dateMin=d3.min(records_sg,function(d){return d.longitude});
 }
 
-function drawLines(){
-
-	var tip = d3.tip()
-		.attr('class', 'd3-tip')
-		.offset([-10, 0])
-		.html(function(d) {
-		return "<span style='color:blue'>" + d.event+ "</span><strong> on </strong> <span style='color:blue'>" + d.date+ "</span>";
-	  })
+function drawLines1(){
+	tip= d3.tip()
+	.attr('class', 'd3-tip')
+	.offset([-10, 0])
+	.html(function(d) {
+	return "<span style='color:blue'>" + d.event+ "</span><strong> on </strong> <span style='color:blue'>" + d.date+ "</span>";
+	});
 	d3.select("body").select("svg").call(tip);
-	records.forEach(function(element,index){
+	records_sg.forEach(function(element,index){
 		var x1=width_axe;
 		var y1=(element["latitude"]-latMin)*(height-height_margin-height_yaxe-height_axe)/(latMax-latMin)+height_axe;
 		var x2=(width-width_margin-width_axe);
 		//var y2=(element["longitude"]-lonMin)*(height-height_margin-height_yaxe-height_axe)/(lonMax-lonMin)+height_axe;
 		var y2=y1;
 		if(element["secretcolumn"]>0){
+			/*
 			var str="("+element["latitude"];
 			str=str+","+element["longitude"]+") ";
-			records.forEach(function(e,i){
+			records_sg.forEach(function(e,i){
 				if((e.latitude==element["latitude"])&&(e.longitude==element["longitude"])){
 					str=str+" event:"+e.date;
 				}
 			});
+			*/
 			/*
 			tmp.forEach(function(d,index){
 				str=str+"event"+index+":"+d.time;  
 			});
 			*/
+			/*
 			var tooltip = d3.select("body")
 				.append("div")
 				.style("position", "absolute")
-				.style("z-index", "10")
+				.style("z-index", "100")
 				.style("visibility", "hidden")
 				.text(str);
+			*/
 			d3.select("svg").append("line")          // attach a line
 				.style("stroke", "grey")  // colour the line
 				.attr("x1", x1)     // x position of the first end of the line
 				.attr("y1", y1)      // y position of the first end of the line
 				.attr("x2", x2)     // x position of the second end of the line
 				.attr("y2", y2)	    // y position of the second end of the line
+				.attr("class","myline")
 				.style("stroke-width",1) 
 				.on("click", function(d,i){
 			      //alert(element["latitude"]);
 				})
-				.on("mouseover",function(){
-					tooltip.style("visibility", "visible");
+				.on("mouseover",function(d){
+					//var marker=d.marker;
+					//var info=marker.infowindow;
+					//info.open(map,marker);
+					//tooltip.style("visibility", "visible");
 					d3.select(this).style("stroke","blue").style("stroke-width",2);
 				})
 				.on("mouseout",function(){
-					tooltip.style("visibility", "hidden");
+					//var marker=d.marker;
+					//var info=marker.infowindow;
+					//info.close();
+					//tooltip.style("visibility", "hidden");
 					d3.select(this).style("stroke","grey").style("stroke-width",1);
 					//tip.hide();
 				});
@@ -302,42 +589,42 @@ function drawLines(){
 			//console.log("repeat");
 		}
 	});
-	
 
-		//console.log("index="+index+" "+x1+" "+y1+" "+x2+" "+y2+" "+t.getTime());
-	d3.select("body").select("svg").selectAll("circle").data(records).enter().append("circle")
-		.attr("cx", function(d){
-			var format = d3.time.format("%m/%d/%Y %H:%M");
-			var t=format.parse(d["date"]);
-			var x3=(t.getTime()-dateMin.getTime())*(width-width_margin-2*width_axe)/(dateMax.getTime()-dateMin.getTime())+width_axe;
-			return x3;
-		})
-		.attr("cy", function(d){
-			var format = d3.time.format("%m/%d/%Y %H:%M");
-			var t=format.parse(d["date"]);
-			var x3=(t.getTime()-dateMin.getTime())*(width-width_margin-2*width_axe)/(dateMax.getTime()-dateMin.getTime())+width_axe;
-			var x1=width_axe;
-			var y1=(d["latitude"]-latMin)*(height-height_margin-height_yaxe-height_axe)/(latMax-latMin)+height_axe;
-			var x2=(width-width_margin-width_axe);
-			var y2=y1;
-			var y3=(y2-y1)/(x2-x1)*(x3-x1)+y1;
-			return y3;
-		})
-		.attr("r",2)
-		.attr("id",function(d){
-			return d["id"];
-		})
-		.style("stroke", "red")
-		.on("click", function(d,i){
-			 //d3.select(this).style("stroke", "blue");
-		})
-		.on('mouseover', tip.show)
-		//.on("mouseover",function(d){
-		//	tip.show();
-		//})
-		.on("mouseout",function(d){
-			tip.hide();
-		});
+	//console.log("index="+index+" "+x1+" "+y1+" "+x2+" "+y2+" "+t.getTime());
+	d3.select("body").select("svg").selectAll(".dot").data(records_sg).enter().append("circle")
+	.attr("cx", function(d){
+		var format = d3.time.format("%m/%d/%Y %H:%M");
+		var t=format.parse(d["date"]);
+		var x3=(t.getTime()-dateMin.getTime())*(width-width_margin-2*width_axe)/(dateMax.getTime()-dateMin.getTime())+width_axe;
+		return x3;
+	})
+	.attr("cy", function(d){
+		var format = d3.time.format("%m/%d/%Y %H:%M");
+		var t=format.parse(d["date"]);
+		var x3=(t.getTime()-dateMin.getTime())*(width-width_margin-2*width_axe)/(dateMax.getTime()-dateMin.getTime())+width_axe;
+		var x1=width_axe;
+		var y1=(d["latitude"]-latMin)*(height-height_margin-height_yaxe-height_axe)/(latMax-latMin)+height_axe;
+		var x2=(width-width_margin-width_axe);
+		var y2=y1;
+		var y3=(y2-y1)/(x2-x1)*(x3-x1)+y1;
+		return y3;
+	})
+	.attr("r",2)
+	.attr("class","dot")
+	.attr("id",function(d){
+		return d["id"];
+	})
+	.style("stroke", "blue")
+	.on("click", function(d,i){
+		 //d3.select(this).style("stroke", "blue");
+	})
+	.on('mouseover', tip.show)
+	//.on("mouseover",function(d){
+	//	tip.show();
+	//})
+	.on("mouseout",function(d){
+		tip.hide();
+	});
 
 	//console.log("x3="+x3);
 	//console.log("y3="+y3);

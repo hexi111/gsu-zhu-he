@@ -215,7 +215,7 @@ function startControls(){
 		}
 	});
 	
-	 form = dialog1.find( "form" ).on( "submit", function( event ) {
+	form = dialog1.find( "form" ).on( "submit", function( event ) {
 		event.preventDefault();
 		appendArticle();
 	});

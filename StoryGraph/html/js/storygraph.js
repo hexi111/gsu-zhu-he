@@ -1,4 +1,4 @@
-var records;
+var records_sg1;
 var latMax;
 var latMin;
 var lonMax;
@@ -24,7 +24,8 @@ function getURLParameter(name) {
     );
 }
 
-$(document).ready(function() {                 
+function loadStoryGraph1() {  
+	/*                 
     $.post('/StoryGraph/dataProviderServlet',"key="+getURLParameter("key")+"&lat1="+getURLParameter("lat1")+"&lat2="+getURLParameter("lat2")+"&lon1="+getURLParameter("lon1")+"&lon2="+getURLParameter("lon2") ,function(responseText) {
 		var str=getURLParameter("link").replace(/\$/g,"\&");
 		//console.log(str);
@@ -34,13 +35,25 @@ $(document).ready(function() {
 		//console.log(responseText);
 		var str=responseText.content.replace(/\|\|/g,"\n");
 		//console.log(str);
-		//records = $.csv.toObjects(data);
+		//records_sg1 = $.csv.toObjects(data);
 		var dsv = d3.dsv("|", "text/plain");
-		records=dsv.parse(str);
+		records_sg1=dsv.parse(str);
 		dataClean();
 		drawAxes();
 		drawLines(); 
 	});
+	*/
+	records_sg1=[];
+	records.forEach(function(element,index){
+		if((element["latitude"]>=lat1)&&(element["latitude"]<=lat2)&&(element["longitude"]>=lon1)&&(element["longitude"]<=lon2)){
+			records_sg1.push(element);
+		}		
+	});
+	//console.log(records_sg1);
+	dataClean();
+	drawAxes();
+	//}
+	drawLines(); 
 	
 	/*
 	$.ajax({
@@ -48,9 +61,9 @@ $(document).ready(function() {
 		url: "afg_output.csv",
 		success: function(data) {
 			//console.log(csv);
-			records = $.csv.toObjects(data);
-			//console.log(records.length);
-			//console.log(records[0].year);
+			records_sg1 = $.csv.toObjects(data);
+			//console.log(records_sg1.length);
+			//console.log(records_sg1[0].year);
 			dataClean();
 			drawAxes();
 			drawLines(); 
@@ -59,11 +72,11 @@ $(document).ready(function() {
 		mimeType: "text/plain"
 	 });
 	 */	
-});
+};
 
 function drawAxes(){
 
-	width=window.innerWidth;
+	width=window.innerWidth/2-10;
 	height=window.innerHeight;
 	
 	//console.log("width= "+width+", height= "+height); 
@@ -142,15 +155,15 @@ function drawAxes(){
 
 function dataClean(){
 
-	latMax=d3.max(records,function(d){return d.latitude});
-	latMin=d3.min(records,function(d){return d.latitude});
+	latMax=d3.max(records_sg1,function(d){return d.latitude});
+	latMin=d3.min(records_sg1,function(d){return d.latitude});
 	//console.log(latMax);
 	//console.log(latMin);
-	lonMax=d3.max(records,function(d){return d.longitude});
-	lonMin=d3.min(records,function(d){return d.longitude});
+	lonMax=d3.max(records_sg1,function(d){return d.longitude});
+	lonMin=d3.min(records_sg1,function(d){return d.longitude});
 	//console.log(lonMax);
 	//console.log(lonMin);
-	dateMax=d3.max(records,function(d){
+	dateMax=d3.max(records_sg1,function(d){
 		//return d.date1;
 		var format = d3.time.format("%m/%d/%Y %H:%M");
 		var datevar=format.parse(d.date);
@@ -158,7 +171,7 @@ function dataClean(){
 		return datevar;
 	});
 	//console.log(dateMax);
-	dateMin=d3.min(records,function(d){
+	dateMin=d3.min(records_sg1,function(d){
 		//return d.date1;
 		var format = d3.time.format("%m/%d/%Y %H:%M");
 		var datevar=format.parse(d.date);
@@ -166,11 +179,11 @@ function dataClean(){
 		return datevar;
 	});
 	//console.log(dateMin);
-	//var dateMin=d3.min(records,function(d){return d.longitude});
+	//var dateMin=d3.min(records_sg1,function(d){return d.longitude});
 }
 
 function drawLines(){
-	records.forEach(function(element,index){
+	records_sg1.forEach(function(element,index){
 		var x1=width_axe;
 		var y1=(element["latitude"]-latMin)*(height-height_margin-height_yaxe-height_axe)/(latMax-latMin)+height_axe;
 		var x2=(width-width_margin-width_axe);
@@ -195,7 +208,7 @@ function drawLines(){
 			.attr("cx", x3)
 			.attr("cy", y3)
 			.attr("r",2)
-			.style("stroke", "red");
+			.style("stroke", "blue");
 		//console.log("x3="+x3);
 		//console.log("y3="+y3);
 	});

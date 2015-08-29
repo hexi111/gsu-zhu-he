@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<title>Sports Visualization</title>
+<link rel="stylesheet" href="css/index.css">
+<script src="js/jquery.js"></script>
+<link rel="stylesheet" href="css/jquery-ui.css">
+<link rel="stylesheet" href="css/theme.css">
+<script src="js/jquery-ui.js"></script> 
+<script src="js/d3.v3.min.js"></script>
+<script src="js/index.js"></script>
+<script src="js/overview.js"></script>
+</head>
+
+<body>
+	<div id="progressbar"><div class="progress-label">Loading...</div></div>
+	<div id="container">
+		<div id="content" style="border:0.5px solid blue"></div>
+		<div id="keyword" style="border:0.5px solid blue"> </div>
+	</div>
+	<div id="input" style="border:1px solid blue">
+		<Label id="lable1">Your Question: </Label>
+		<input id="question"></input>
+		<button id="submit">ASK</button>
+		<button id="open">OPEN</button>
+	</div>
+	<div id="append_dialog" title="Visualize a different page">
+	<form>
+	<center>
+	<label for="content" style="width:50px">URL:</label>
+	<input type="text" name="url" id="url" value="" style="width:400px">
+	</center>
+	<!-- Allow form submission with keyboard without duplicating the dialog button -->
+	</form>
+	<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+	</div>
+</body>
+</html>
