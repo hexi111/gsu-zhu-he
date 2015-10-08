@@ -32,8 +32,19 @@
     	<servlet-class>edu.gsu.vis.ReadTennisLogServlet</servlet-class>
 	</servlet>
 	
+	<servlet>
+    	<servlet-name>ParseQueryServlet</servlet-name>
+    	<servlet-class>edu.gsu.vis.ParseQueryServlet</servlet-class>
+	</servlet>
+	
 	<servlet-mapping>
     	<servlet-name>ReadTennisLogServlet</servlet-name>
     	<url-pattern>/ReadTennisLogServlet/*</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+    	<servlet-name>ParseQueryServlet</servlet-name>
+    	<url-pattern>/ParseQueryServlet/*</url-pattern>
+	</servlet-mapping>
+
 </web-app>

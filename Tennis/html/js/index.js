@@ -1,6 +1,5 @@
 // global var
 var tennisMatch;
-var duration = 100;
 var width_axe=70;
 var height_axe=20;
 var height_yaxe=35;
@@ -8,7 +7,19 @@ var colors=[];
 var players=[];
 
 //var address="http://match.sports.sina.com.cn/livecast/t/live.php?id=126790";
+//var address="http://match.sports.sina.com.cn/livecast/t/live.php?id=126827";
+//var address="http://match.sports.sina.com.cn/livecast/t/live.php?id=120477";
+//var address="http://match.sports.sina.com.cn/livecast/t/live.php?id=126736";
+//var address="http://match.sports.sina.com.cn/livecast/t/live.php?id=128685";
+//var address="http://match.sports.sina.com.cn/livecast/t/live.php?id=128342";
+
+
+//good
 var address="http://match.sports.sina.com.cn/livecast/t/live.php?id=126827";
+//var address="http://match.sports.sina.com.cn/livecast/t/live.php?id=126775";
+//var address="http://match.sports.sina.com.cn/livecast/t/live.php?id=126756";
+//var address="http://match.sports.sina.com.cn/livecast/t/live.php?id=128284";
+//var address="http://match.sports.sina.com.cn/livecast/t/live.php?id=42646";
 
 $(document).ready(function() {
  	
@@ -18,16 +29,15 @@ $(document).ready(function() {
 		text: true
 	})
 	.click(function() {
-		svg_dissappear(0);
-		svg_dissappear(1);
-		svg_dissappear(2);
-		svg_show(1);
-		//svg_changeSize(0,2);
-
-		//svgs[0].attr("height", 400).transition().delay(100).duration(1000000);
-		//svgs[1].style("opacity",0).transition().delay(100).duration(100000);
-		//svgs[2].style("opacity",0).transition().delay(100).duration(100000);
-		//svgs[3].style("opacity",0).transition().delay(100).duration(100000);
+		//svg_dissappear(0);
+		//svg_dissappear(1);
+		//svg_dissappear(2);
+		//svg_show(2);
+		//$.post('/Tennis/ParseQueryServlet','queryString='+$("#question").text()+'&name1='+players[0]+'&name2='+players[1]+'&numOfSets='+numOfSvgs, function(queryResult) {
+		$.post('/Tennis/ParseQueryServlet','queryString=11&name1=22&name2=33&numOfSets=4', function(queryResult) {
+			//console.log(queryResult);
+			transform(queryResult.status,queryResult.people,queryResult.character);
+		});
 	});
 	
 	$( "#open" ).button({
@@ -119,13 +129,15 @@ function dataLoading(){
 		$( "#progressbar" ).progressbar( "value", 100 );
 		players[0]=tennisMatch.player1;
 		players[1]=tennisMatch.player2;
-		drawMatch();
+		//drawMatch();
+		initData();
 	});
 }
 
 function computeHeight(){
 	var windowHeight=$(window).height()-20;
 	//console.log("windowHeight="+windowHeight);
+	$("#title").height(20);
 	$("#content").height(windowHeight-40);
 	$("#keyword").height(windowHeight-40);
 	$("#input").height(40);
@@ -141,17 +153,17 @@ function addLegend(){
 
 	var div_height=$("#keyword").height()-14;
 	var div_width=$("#keyword").width();
-	var svg=d3.select("#keyword").append("svg")	
-		.attr("width", div_width)
-		.attr("height", div_height);
-	var width=10;
+	var svg=d3.select("#legend").append("svg")	
+		.attr("width", "100%")
+		.attr("height", "100%");
+	var width=3;
 	var height=10;
 	// add legend   
 	var legend = svg.append("g")
 		.attr("class", "legend")
-		.attr("height", 10)
-		.attr("width", 10)
-		.attr('transform', 'translate('+width+','+height+')')    
+		.attr("height", "100%")
+		.attr("width", "100%")
+		.attr('transform', 'translate('+width+','+height+')');   
       
     
     legend.selectAll('rect')
@@ -164,7 +176,7 @@ function addLegend(){
 	.attr("height", 10)
 	.style("fill", function(d) { 
     	return d;
-	})
+	});
       
     legend.selectAll('text')
 	.data(players)
@@ -175,4 +187,54 @@ function addLegend(){
 	.text(function(d) {
 		return d;
 	});
+}
+
+function addTitle(){
+	var div_height=$("#title").height();
+	var div_width=$("#title").width();
+	var svg=d3.select("#title").append("svg")	
+	.attr("width", "100%")
+	.attr("height", "100%");
+	
+	var legend = svg.append("g")
+	.attr("class", "legend")
+	.attr("height", "100%")
+	.attr("width", "100%")
+	.attr('transform', 'translate('+(div_width/2-60)+','+0+')')  
+	 
+	legend.append("rect")
+	.attr("x", 0)
+	.attr("y", 0)
+	.attr("width", 20)
+	.attr("height", 20)
+	.style("fill", function(d) { 
+    	return "blue";
+	});
+	
+	legend.append("text")
+	.attr("x", 25)
+	.attr("y", 15)
+	.attr("id","player1")
+	.style("font-size","15px")
+	.text(players[0]);
+	
+	var tmp=d3.select("#player1").node().getComputedTextLength();
+	//alert("tmp="+tmp);
+	
+	legend.append("rect")
+	.attr("x", 35+tmp)
+	.attr("y", 0)
+	.attr("width", 20)
+	.attr("height", 20)
+	.style("fill", function(d) { 
+    	return "red";
+	});
+	
+	tmp=tmp+35+20+5;
+	
+	legend.append("text")
+	.attr("x", tmp)
+	.attr("y", 15)
+	.style("font-size","15px")
+	.text(players[1]);
 }

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
+import java.util.List;
+import java.io.FileReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,9 +26,34 @@ import javax.servlet.http.HttpServletResponse;
 public class ReadTennisLogServlet extends HttpServlet{
 
 	private HashMap	<String,TennisMatch> matchs= new HashMap <String, TennisMatch> ();
+	private List <String> patterns = new ArrayList <String> ();
+	private List <Integer> kinds = new ArrayList <Integer> ();
+	private HashMap <String,String> names=new HashMap <String,String>();
 	
 	public void init() throws ServletException {
-		
+		try{
+			BufferedReader is = new BufferedReader(new FileReader(getServletContext().getRealPath("/WEB-INF/words.txt")));
+			String str=is.readLine();
+			while(str!=null){
+				String [] pairs =new String [2];
+				pairs=str.split(",");
+				patterns.add(pairs[0].trim());
+				kinds.add(new Integer(pairs[1].trim())); 
+				str=is.readLine();
+			}
+			is.close();
+			BufferedReader is1 = new BufferedReader(new FileReader(getServletContext().getRealPath("/WEB-INF/names.txt")));
+			str=is1.readLine();
+			while(str!=null){
+				String [] pairs =new String [2];
+				pairs=str.split(",");
+				names.put(pairs[0].trim(),pairs[1].trim());
+				str=is1.readLine();
+			}
+			is1.close();
+		} catch(IOException e){
+			throw new ServletException(e);
+		}
 	}
 	
 	private String extractKey(String address){
@@ -88,8 +115,23 @@ public class ReadTennisLogServlet extends HttpServlet{
 		
 			match=new TennisMatch();
 			// get the name of the first and the second players from the first record.
-			match.setPlayer1(logs.get(0).getAsJsonObject().get("team1").toString().replaceAll("\"",""));
-			match.setPlayer2(logs.get(0).getAsJsonObject().get("team2").toString().replaceAll("\"",""));
+			String team1=logs.get(0).getAsJsonObject().get("team1").toString().replaceAll("\"","");
+			String name1=names.get(team1);
+			if(name1!=null){
+				match.setPlayer1(name1);
+			}
+			else{
+				match.setPlayer1(team1);				
+			}
+
+			String team2=logs.get(0).getAsJsonObject().get("team2").toString().replaceAll("\"","");
+			String name2=names.get(team2);
+			if(name2!=null){
+				match.setPlayer2(name2);
+			}
+			else{
+				match.setPlayer2(team2);				
+			}
 			// store the match id
 			match.setId(key);
 			// get the number of sets in the match
@@ -370,7 +412,7 @@ public class ReadTennisLogServlet extends HttpServlet{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void filter(TennisMatch match){
 		int i,j,k,g;
 		for(i=0;i<match.getSets().size();i++){
@@ -404,7 +446,9 @@ public class ReadTennisLogServlet extends HttpServlet{
 					game.getScores().remove(game.getScores().size()-1);
 				}
 				//System.out.println("size="+game.getScores().size()+" num="+num);
-				tmp=game.getScores().get(game.getScores().size()-1);
+				if(game.getScores().size()>1){
+					tmp=game.getScores().get(game.getScores().size()-1);
+				}
 				game.setHost(tmp.getHost());
 				game.setGuest(tmp.getGuest());
 				if(game.getHost()>game.getGuest()){
@@ -418,7 +462,59 @@ public class ReadTennisLogServlet extends HttpServlet{
 				game.start=tmp.getTimestamp();	
 			}
 		}
+
+		int pre=0;
+		
+		for(i=0;i<match.getSets().size();i++){
+			TennisSet set= match.getSets().get(i);
+			for(j=0;j<set.getGames().size();j++){
+				set.getGames().get(j).setServer(1-pre);	
+				pre=1-pre;
+			}
+		}
+				
+		for(i=0;i<match.getSets().size();i++){
+			TennisSet set= match.getSets().get(i);
+			for(j=0;j<set.getGames().size();j++){
+				TennisGame game = set.getGames().get(j);
+				for(k=0;k<game.getScores().size();k++){
+					TennisScore score= game.getScores().get(k);
+					ArrayList <String> comments = score.getComments();
+					//System.out.println(comments.get(comments.size()-1));
+					String comment = comments.get(comments.size()-1);
+					if(k==0){
+						if(score.getHost()==0){
+							score.setScore(1);
+						}
+						else{
+							score.setScore(0);
+						}
+					}
+					else{
+						TennisScore last=game.getScores().get(k-1);
+						if(score.getHost()==last.getHost()){
+							score.setScore(1);
+						}
+						else{
+							score.setScore(0);
+						}
+					}
+					int size=patterns.size();
+					for(g=0;g<size;g++){
+						if(comment.indexOf(patterns.get(g))!=-1){
+							switch(kinds.get(g)){
+								case 0: score.setAce(game.getServer());break;
+								case 1: score.setDoubleFault(game.getServer());break;
+								case 2: score.setVolley(score.getScore());break;
+								case 3: break;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
+	
 	/*
 	private void extractFeature(TennisMatch match){
 		int i,j,k,g;
@@ -559,6 +655,15 @@ public class ReadTennisLogServlet extends HttpServlet{
 		private int winner;
 		private Date start;
 		private Date end;
+		private int server; // 0: host; 1: guest
+
+				
+		public int getServer(){
+			return server;
+		}
+		public void setServer(int server){
+			this.server=server;
+		}
 		
 		public Date getStart(){
 			return start;
@@ -626,14 +731,55 @@ public class ReadTennisLogServlet extends HttpServlet{
 	}
 	
 	private class TennisScore {
+		
 		//private int id;
 		private ArrayList <String> comments=new ArrayList<String>();		
 		private int host;
 		private int guest;
-		private int ACE1;
-		private int ACE2;
 		private int id;
 		private Date timestamp;
+		private int score; // 0:host; 1:guest
+		private int ace; // 0:host; 1:guest -1:none
+		private int doubleFault; // 0:host; 1:guest -1:none
+		private int volley; // 0:host; 1:guest -1:none
+		
+		public TennisScore(){
+			this.ace=-1;
+			this.doubleFault=-1;
+			this.volley=-1;
+		}
+		
+		public void setVolley(int volley){
+			this.volley=volley;
+		}
+		
+		public int getVolley(int volley){
+			return this.volley;
+		}
+		
+		public void setScore(int score){
+			this.score=score;
+		}
+		
+		public int getScore(){
+			return this.score;
+		}
+		
+		public void setDoubleFault(int doubleFault){
+			this.doubleFault=doubleFault;
+		}
+		
+		public int getDoubleFault(){
+			return this.doubleFault;
+		}
+		
+		public void setAce(int ace){
+			this.ace = ace;
+		}
+		
+		public int getAce(){
+			return this.ace;
+		}
 		
 		public Date getTimestamp(){
 			return this.timestamp;
@@ -671,18 +817,6 @@ public class ReadTennisLogServlet extends HttpServlet{
 		
 		public void setGuest(int guest){
 			this.guest=guest;
-		}
-		private int getACE1(){
-			return ACE1;
-		}
-		private void setACE1(int ace){
-			this.ACE1=ace;
-		}
-		private int getACE2(){
-			return ACE2;
-		}
-		private void setACE2(int ace){
-			this.ACE2=ace;
 		}
 	}
 }
