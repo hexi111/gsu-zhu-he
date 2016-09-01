@@ -53,11 +53,11 @@ function loadData(address){
 		}
 		else {
 			var str=responseText.content.replace(/\|\|/g,"\n");
-			//console.log(str);
+			console.log(str);
 			//records = $.csv.toObjects(data);
 			var dsv = d3.dsv("|", "text/plain");
 			records=dsv.parse(str);
-			//console.log(records);
+			console.log(records);
 			centerLat=responseText.centerLat;
 			centerLon=responseText.centerLon;
 			key=responseText.key;

@@ -1,0 +1,21 @@
+.xaxis path,
+.xaxis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.y1axis path,
+.y1axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.y2axis path,
+.y2axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+

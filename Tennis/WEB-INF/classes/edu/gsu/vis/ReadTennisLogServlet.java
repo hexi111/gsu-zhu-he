@@ -102,7 +102,7 @@ public class ReadTennisLogServlet extends HttpServlet{
 				for(i=0;i<jarray.size();i++){
 					// records with no comments.
 					if(jarray.get(i).getAsJsonObject().get("lnk")!=null){
-						System.out.println("lnk record");
+						//System.out.println("lnk record");
 					}
 					else{
 						logs.add(jarray.get(i).getAsJsonObject());					
@@ -342,7 +342,7 @@ public class ReadTennisLogServlet extends HttpServlet{
 					else if((setIndex==(numOfSets-1))&&((gameHost==7)||(gameGuest==7)||((gameGuest==6)&&(gameHost<5))||((gameHost==6)&&(gameGuest<5)))){
 						//set = match.getSets().get(setIndex-1);
 						game= set.getGames().get(set.getGames().size()-1);
-						System.out.println("last point"+ " gameHost="+gameHost+" gameGuest="+gameGuest);
+						//System.out.println("last point"+ " gameHost="+gameHost+" gameGuest="+gameGuest);
 					}
 					else{
 						//set = match.getSets().get(setIndex);
@@ -500,13 +500,18 @@ public class ReadTennisLogServlet extends HttpServlet{
 						}
 					}
 					int size=patterns.size();
-					for(g=0;g<size;g++){
-						if(comment.indexOf(patterns.get(g))!=-1){
-							switch(kinds.get(g)){
-								case 0: score.setAce(game.getServer());break;
-								case 1: score.setDoubleFault(game.getServer());break;
-								case 2: score.setVolley(score.getScore());break;
-								case 3: break;
+					for(int m =0;m<comments.size();m++){
+						for(g=0;g<size;g++){
+							if(comments.get(m).indexOf(patterns.get(g))!=-1){
+								//System.out.println("comment="+comment+" pattern= "+patterns.get(g));
+								switch(kinds.get(g)){
+									case 0: score.setAce(game.getServer());break;
+									case 1: score.setDoubleFault(game.getServer());break;
+									case 2: score.setVolley(game.getServer());break;
+									case 3: score.setUnforcedError(game.getServer());break;
+									case 4: score.setForeHand(game.getServer());break;
+									case 7: score.setInsideout(game.getServer());break;
+								}
 							}
 						}
 					}
@@ -742,11 +747,42 @@ public class ReadTennisLogServlet extends HttpServlet{
 		private int ace; // 0:host; 1:guest -1:none
 		private int doubleFault; // 0:host; 1:guest -1:none
 		private int volley; // 0:host; 1:guest -1:none
+		private int insideout; // 0:host; 1:guest -1:none
+		private int unforcedError; // 0:host; 1:guest -1:none
+		private int foreHand; // 0:host; 1:guest -1:none
+
 		
 		public TennisScore(){
 			this.ace=-1;
 			this.doubleFault=-1;
 			this.volley=-1;
+			this.insideout = -1;
+			this.unforcedError = -1;
+			this.foreHand = -1;
+		}
+
+		public void setForeHand(int foreHand){
+			this.foreHand=foreHand;
+		}
+		
+		public int getForeHand(){
+			return this.foreHand;
+		}
+		
+		public void setUnforcedError(int unforcedError){
+			this.unforcedError=unforcedError;
+		}
+		
+		public int getUnforcedError(){
+			return this.unforcedError;
+		}
+		
+		public void setInsideout(int insideout){
+			this.insideout=insideout;
+		}
+		
+		public int getInsideout(){
+			return this.insideout;
 		}
 		
 		public void setVolley(int volley){

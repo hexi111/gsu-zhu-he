@@ -7,7 +7,7 @@ var dataSet=[];
 
 var svgStatus=[];
 var svgPeople=[];
-var svgCharacter;
+var svgCharacter=[];
 
 
 function svg_dissappear(index){
@@ -51,60 +51,151 @@ function svg_show(index){
 	.attr("y2", function(d, j) { return d.y2; });
 	
 	var points1=svgs[index].selectAll("circle.host").data(dataSet[index].player1.points);	
-	points1.transition().delay(2000).duration(500)
-	.attr("class","host")
-	.attr("cx", function(d, j) { return d.cx; })    
-	.attr("cy", function(d, j) { return d.cy; }) 
-	.attr("r",3)
-	.style("stroke", "blue");	
-
+	//alert(svgCharacter[0]);
+	if(svgPeople[0]==1){
+		points1.transition().delay(2000).duration(500)
+		.attr("class","host")
+		.attr("cx", function(d, j) { return d.cx; })    
+		.attr("cy", function(d, j) { return d.cy; }) 
+		//.attr("r",3)
+		.attr("r",function(d,j){
+		if(svgCharacter[0]==1){
+			return 3;
+		}
+		else if((svgCharacter[1]==1)&&(d.ace!=-1)){
+			return d.ace*3;
+		}
+		else if((svgCharacter[2]==1)&&(d.doubleFault!=-1)){
+			return d.doubleFault*3;
+		}
+		else if((svgCharacter[5]==1)&&(d.volley!=-1)){
+			return d.volley*3;
+		}
+		else if((svgCharacter[6]==1)&&(d.insideout!=-1)){
+			return d.insideout*3;
+		}
+		else if((svgCharacter[3]==1)&&(d.unforcedError!=-1)){
+			return d.unforcedError*3;
+		}
+		else if((svgCharacter[4]==1)&&(d.foreHand!=-1)){
+			return d.foreHand*3;
+		}
+		else {
+			return 0;
+		}
+		})
+		.style("stroke", "blue");	
+	}
+	
 	var points2=svgs[index].selectAll("circle.guest").data(dataSet[index].player2.points);	
-	points2.transition().delay(2000).duration(500)
-	.attr("class","guest")
-	.attr("cx", function(d, j) { return d.cx; })    
-	.attr("cy", function(d, j) { return d.cy; }) 
-	.attr("r",3)
-	.style("stroke", "red");
+	if(svgPeople[1]==1){	
+		points2.transition().delay(2000).duration(500)
+		.attr("class","guest")
+		.attr("cx", function(d, j) { return d.cx; })    
+		.attr("cy", function(d, j) { return d.cy; }) 
+		//.attr("r",3)
+		.attr("r",function(d,j){
+		if(svgCharacter[0]==1){
+			return 3;
+		}
+		else if((svgCharacter[1]==1)&&(d.ace!=-1)){
+			return d.ace*3;
+		}
+		else if((svgCharacter[2]==1)&&(d.doubleFault!=-1)){
+			return d.doubleFault*3;
+		}
+		else if((svgCharacter[5]==1)&&(d.volley!=-1)){
+			return d.volley*3;
+		}
+		else if((svgCharacter[6]==1)&&(d.insideout!=-1)){
+			return d.insideout*3;
+		}
+		else if((svgCharacter[3]==1)&&(d.unforcedError!=-1)){
+			return d.unforcedError*3;
+		}
+		else if((svgCharacter[4]==1)&&(d.foreHand!=-1)){
+			return d.foreHand*3;
+		}
+		else {
+			return 0;
+		}
+		})
+		.style("stroke", "red");
+	}
 }
 
 function svg_update(index){
 	svgs[index].selectAll("circle").transition().attr("cy",0).attr("r",0).delay(0).duration(500);
 	var points1=svgs[index].selectAll("circle.host").data(dataSet[index].player1.points);	
 	//alert("svgCharacter="+svgCharacter);
+	if(svgPeople[0]==1){
 	points1.transition().delay(2000).duration(500)
 	.attr("class","host")
 	.attr("cx", function(d, j) { return d.cx; })    
 	.attr("cy", function(d, j) { return d.cy; }) 
 	.attr("r",function(d,j){
-		if(svgCharacter==0){
+		if(svgCharacter[0]==1){
+			return 3;
+		}
+		else if((svgCharacter[1]==1)&&(d.ace!=-1)){
 			return d.ace*3;
 		}
-		else if(svgCharacter==1){
+		else if((svgCharacter[2]==1)&&(d.doubleFault!=-1)){
 			return d.doubleFault*3;
 		}
-		else if(svgCharacter==2){
+		else if((svgCharacter[5]==1)&&(d.volley!=-1)){
 			return d.volley*3;
 		}
-	})
+		else if((svgCharacter[6]==1)&&(d.insideout!=-1)){
+			return d.insideout*3;
+		}
+		else if((svgCharacter[3]==1)&&(d.unforcedError!=-1)){
+			return d.unforcedError*3;
+		}
+		else if((svgCharacter[4]==1)&&(d.foreHand!=-1)){
+			return d.foreHand*3;
+		}
+		else {
+			return 0;
+		}
+		})
 	.style("stroke", "blue");	
+	}
 
 	var points2=svgs[index].selectAll("circle.guest").data(dataSet[index].player2.points);	
+	if(svgPeople[1]==1){
 	points2.transition().delay(2000).duration(500)
 	.attr("class","guest")
 	.attr("cx", function(d, j) { return d.cx; })    
 	.attr("cy", function(d, j) { return d.cy; }) 
 	.attr("r",function(d,j){
-		if(svgCharacter==0){
+		if(svgCharacter[0]==1){
+			return 3;
+		}
+		else if((svgCharacter[1]==1)&&(d.ace!=-1)){
 			return d.ace*3;
 		}
-		else if(svgCharacter==1){
+		else if((svgCharacter[2]==1)&&(d.doubleFault!=-1)){
 			return d.doubleFault*3;
 		}
-		else if(svgCharacter==2){
+		else if((svgCharacter[5]==1)&&(d.volley!=-1)){
 			return d.volley*3;
 		}
-	})
-	.style("stroke", "red");	
+		else if((svgCharacter[6]==1)&&(d.insideout!=-1)){
+			return d.insideout*3;
+		}
+		else if((svgCharacter[3]==1)&&(d.unforcedError!=-1)){
+			return d.unforcedError*3;
+		}
+		else if((svgCharacter[4]==1)&&(d.foreHand!=-1)){
+			return d.foreHand*3;
+		}
+		else {
+			return 0;
+		}
+		})
+	.style("stroke", "red");
+	}	
 }
 
 function svg_changeSize(index,num) {
@@ -115,9 +206,39 @@ function svg_changeSize(index,num) {
 		.attr("height", div_height/num).style("border","0px solid black");;
 }
 
+function transform1(status,people,character){
+	var i;
+	svgPeople=people;
+	console.log("char="+character);
+	svgCharacter[0]=0;
+	svgCharacter[1]=0;
+	svgCharacter[2]=0;
+	svgCharacter[3]=0;	
+	svgCharacter[4]=0;
+	svgCharacter[5]=0;
+	svgCharacter[6]=0;
+	svgCharacter[7]=0;
+	svgCharacter[8]=0;
+	svgCharacter[9]=0;
+	svgCharacter[character] = 1;
+	for(i=0;i<numOfSvgs;i++){
+		if((svgStatus[i]==1)&&(status[i]==0)){
+			svg_dissappear(i);
+		}
+		else if ((svgStatus[i]==0)&&(status[i]==1)){
+			svg_show(i);
+		}
+		else if ((svgStatus[i]==1)&&(status[i]==1)) {
+			svg_update(i);
+		}
+	}
+	svgStatus=status;
+}
+
 function transform(status,people,character){
 	var i;
 	svgPeople=people;
+	console.log("char="+character);
 	svgCharacter=character;
 	for(i=0;i<numOfSvgs;i++){
 		if((svgStatus[i]==1)&&(status[i]==0)){
@@ -213,6 +334,30 @@ function initData(){
 				else{
 					dataSet[i].player1.points[numOfPoints].volley=0;				
 				}
+				if(tennisMatch.sets[i].games[j].scores[k].doubleFault==0){
+					dataSet[i].player1.points[numOfPoints].doubleFault=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].doubleFault=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].insideout==0){
+					dataSet[i].player1.points[numOfPoints].insideout=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].insideout=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].unforcedError==0){
+					dataSet[i].player1.points[numOfPoints].unforcedError=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].unforcedError=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].foreHand==0){
+					dataSet[i].player1.points[numOfPoints].foreHand=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].foreHand=0;				
+				}
 				dataSet[i].player2.points[numOfPoints]= new Object();
 				dataSet[i].player2.points[numOfPoints].cx=x;
 				dataSet[i].player2.points[numOfPoints].cy=y2;		
@@ -228,6 +373,30 @@ function initData(){
 				}
 				else{
 					dataSet[i].player2.points[numOfPoints].volley=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].doubleFault==1){
+					dataSet[i].player2.points[numOfPoints].doubleFault=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].doubleFault=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].insideout==1){
+					dataSet[i].player2.points[numOfPoints].insideout=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].insideout=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].unforcedError==1){
+					dataSet[i].player2.points[numOfPoints].unforcedError=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].unforcedError=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].foreHand==1){
+					dataSet[i].player2.points[numOfPoints].foreHand=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].foreHand=0;				
 				}
 				//console.log("cy2="+y2);
 				numOfPoints++;
@@ -261,11 +430,19 @@ function initData(){
 	for(i=0;i<2;i++){
 		svgPeople[i]=1;
 	}
-	svgCharacter=100;
+	svgCharacter[0]=1;
+	svgCharacter[1]=0;
+	svgCharacter[2]=0;
+	svgCharacter[3]=0;	
+	svgCharacter[4]=0;
+	svgCharacter[5]=0;
+	svgCharacter[6]=0;
+	svgCharacter[7]=0;
+	svgCharacter[8]=0;
+	svgCharacter[9]=0;
 	//addLegend();
 	addTitle();
 }
-
 
 function paint(){
 

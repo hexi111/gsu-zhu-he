@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<title>Tennis Match Visualization</title>
+<link rel="stylesheet" href="css/jquery-ui.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/tennismatch.css">
+<script src="http://www.youtube.com/player_api"></script>
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui.js"></script> 
+<script src="js/d3.v3.min.js"></script>
+<script src="js/tennismatch.js"></script>
+<script src="js/util.js"></script>
+<link rel="stylesheet" href="js/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+<script type="text/javascript" src="js/jquery.fancybox.js?v=2.1.5"></script>
+<script type="text/javascript" src="js/jquery.fancybox-media.js?v=1.0.6"></script>
+</head>
+
+<body>
+	<a id= "fake" class="fancybox fancybox.iframe" style="display:none" href="http://www.youtube.com/embed/cYplvwBvGA4?enablejsapi=1&wmode=opaque"></a>
+	<div id="progressbar"><div class="progress-label">Loading...</div></div>
+	<div id="container">
+		<div id="content" style="border:0.5px solid blue">
+			<div id="title">
+			</div>
+		</div>
+		<div id="keyword" style="border:0.5px solid blue;overflow-y: scroll;font-size:10pt;font-family: 'Arial','Helvetica', sans-serif;"> 
+			<center>
+			<label id="time"> Time </label>
+			</center>
+			</br>
+			&nbsp;Wide <input type="checkbox" name="features" id="wide" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Body <input type="checkbox" name="features" id="body" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Down the T <input type="checkbox" name="features" id="downthet" unchecked onchange = "checkboxChange(this)"> </br>
+			<hr>
+			&nbsp;ACE <input type="checkbox" name="features" id="ACE" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Fault <input type="checkbox" name="features" id="FF" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Double Fault <input type="checkbox" name="features" id="DF" unchecked onchange = "checkboxChange(this)"> </br>
+			<hr>
+			&nbsp;FH<input type="checkbox" name="features" id="fhtopspin" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;BH<input type="checkbox" name="features" id="bhtopspin" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;FH slice<input type="checkbox" name="features" id="fhslice" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;BH slice <input type="checkbox" name="features" id="bhslice" unchecked onchange = "checkboxChange(this)"> </br>
+			<hr>
+			&nbsp;Volley <input type="checkbox" name="features" id="volley" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Smash <input type="checkbox" name="features" id="smash" unchecked onchange = "checkboxChange(this)"> </br>
+			<hr>
+			&nbsp;Drop shot<input type="checkbox" name="features" id="dropshot" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Lob<input type="checkbox" name="features" id="lob" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Half-Volley<input type="checkbox" name="features" id="hvolley" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Swing-Volley<input type="checkbox" name="features" id="svolley" unchecked onchange = "checkboxChange(this)"> </br>
+			<hr>
+			&nbsp;Winner<input type="checkbox" name="features" id="winner" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Unforced Err<input type="checkbox" name="features" id="UE" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Forced Err<input type="checkbox" name="features" id="FE" unchecked onchange = "checkboxChange(this)"> </br>
+			<hr>
+			&nbsp;Rally >= <label id="rallyvalue"> 1 </label><input type="checkbox" name="features" id="rally" unchecked onchange = "checkboxChange(this)"> </br>
+			<div id="slider" style="width: 100px"></div>			
+			<hr>
+			&nbsp;Break Points<input type="checkbox" name="features" id="bpoints" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Game Points<input type="checkbox" name="features" id="gpoints" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Set Points<input type="checkbox" name="features" id="spoints" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;Match Points<input type="checkbox" name="features" id="mpoints" unchecked onchange = "checkboxChange(this)"> </br>
+			<hr>
+			&nbsp;<label id="ppl1">People1 </label><input type="checkbox" name="features" id="p1" checked onchange = "checkboxChange(this)"></br>
+			&nbsp;<label id="ppl2">People2 </label><input type="checkbox" name="features" id="p2" checked onchange = "checkboxChange(this)"></br>
+			<hr>
+			<!--input type="submit" id = "filter" value="Query" style="font-size:12px;width:65%;display: block;margin-left: auto; margin-right: auto "> 
+			</br-->
+			<input type="submit" id = "reset" value="Reset" style="font-size:12px;width:65%;display: block;margin-left: auto; margin-right: auto "> 
+			</br>
+			<input type="submit" id = "report" value="Report" style="font-size:12px;width:65%;display: block;margin-left: auto; margin-right: auto "> 
+		</div>
+	</div>
+</body>
+</html>

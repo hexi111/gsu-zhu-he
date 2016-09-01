@@ -16,6 +16,7 @@ public class ParseQueryServlet extends HttpServlet{
 		String name1=request.getParameter("name1");
 		String name2=request.getParameter("name2");
 		QueryResult result = new QueryResult(numOfSets);
+		System.out.println("queryString="+queryString);
 		result.parse(queryString,name1,name2,numOfSets);
 		String json = new Gson().toJson(result);
 		//System.out.println("json="+json);
@@ -32,7 +33,7 @@ public class ParseQueryServlet extends HttpServlet{
 		
 		private int [] status; // 0: invisible; 1: visible
 		private int [] people; // two players; 
-		private int character; // technical terms;
+		private int character ; // technical terms;
 		
 		public QueryResult(int numOfSets){
 			status=new int [numOfSets];
@@ -41,13 +42,26 @@ public class ParseQueryServlet extends HttpServlet{
 		public void parse(String queryString, String name1, String name2,int numOfSets) {
 			int i;
 			for(i=0;i<numOfSets;i++){
-				status[i]=0;
+				status[i]=1;
 			}
 			status[0]=1;
 			status[1]=1;
 			people[0]=1;
 			people[1]=1;
-			character=0;
+			System.out.println("queryString=" + queryString);
+			if(queryString.indexOf("ace")!=-1){
+				character = 1;
+			}
+			else if(queryString.indexOf("double fault")!= -1){
+				character = 2;
+			}
+			else if(queryString.indexOf("volley")!= -1){
+				character = 5;
+			}
+			else if(queryString.indexOf("unforced error")!= -1){
+				character = 3;
+			}	
+			System.out.println("character=" + character);		
 		}
 	}
 }

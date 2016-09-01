@@ -26,6 +26,21 @@
       Sports Visualization
     </description>
 	<display-name>Sports Visualization</display-name>
+    <!--listener>
+		<listener-class>
+             edu.gsu.vis.BackgroundManager 
+        </listener-class>
+   </listener-->
+
+	<servlet>
+    	<servlet-name>LiveTennisServlet</servlet-name>
+    	<servlet-class>edu.gsu.vis.LiveTennisServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+    	<servlet-name>ShowTennisServlet</servlet-name>
+    	<servlet-class>edu.gsu.vis.ShowTennisServlet</servlet-class>
+	</servlet>
 
 	<servlet>
     	<servlet-name>ReadTennisLogServlet</servlet-name>
@@ -36,6 +51,21 @@
     	<servlet-name>ParseQueryServlet</servlet-name>
     	<servlet-class>edu.gsu.vis.ParseQueryServlet</servlet-class>
 	</servlet>
+
+	<servlet>
+    	<servlet-name>TennisReaderServlet</servlet-name>
+    	<servlet-class>edu.gsu.vis.TennisReaderServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+    	<servlet-name>LiveTennisServlet</servlet-name>
+    	<url-pattern>/LiveTennisServlet/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+    	<servlet-name>ShowTennisServlet</servlet-name>
+    	<url-pattern>/ShowTennisServlet/*</url-pattern>
+	</servlet-mapping>
 	
 	<servlet-mapping>
     	<servlet-name>ReadTennisLogServlet</servlet-name>
@@ -45,6 +75,11 @@
 	<servlet-mapping>
     	<servlet-name>ParseQueryServlet</servlet-name>
     	<url-pattern>/ParseQueryServlet/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+    	<servlet-name>TennisReaderServlet</servlet-name>
+    	<url-pattern>/TennisReaderServlet/*</url-pattern>
 	</servlet-mapping>
 
 </web-app>

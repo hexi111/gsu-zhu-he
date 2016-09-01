@@ -1,0 +1,118 @@
+#content {
+	border: 0px solid; 
+	width:90.1%;
+	/*width: 70%;*/
+	/*height 600px;*/
+	float: left;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
+#title{
+	width:100%;
+	float: left;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
+#keyword {
+	border: 0px solid; 
+	width:9.3%;
+	/*width:29%;*/
+	/*height 600px;*/
+	float: right;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
+.xaxis path,
+.xaxis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.xaxis text {;
+    font-family: 'Arial','Helvetica', sans-serif;
+    font-size: 10pt;
+}
+
+.yaxis path,
+.yaxis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.yaxis text {;
+    font-family: 'Arial','Helvetica', sans-serif;
+    font-size: 10pt;
+}
+
+.yaxis2 path,
+.yaxis2 line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.yaxis2 text {;
+    font-family: 'Arial','Helvetica', sans-serif;
+    font-size: 7pt;
+}
+
+
+
+.ui-progressbar {
+		position: relative;
+	}
+.progress-label {
+	position: absolute;
+	left: 40%;
+	top: 4px;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 #fff;
+}
+
+#progressbar{
+	position: fixed;
+	width:400px;
+}
+
+.legend {
+	padding: 5px;
+	font: 10px sans-serif;
+	background: yellow;
+	box-shadow: 2px 2px 1px #888;
+}
+
+.fancybox-nav {
+    width: 60px;       
+}
+
+.fancybox-nav span {
+    visibility: visible;
+}
+
+.fancybox-next {
+    right: -60px;
+}
+
+.fancybox-prev {
+    left: -60px;
+}

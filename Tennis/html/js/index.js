@@ -33,11 +33,95 @@ $(document).ready(function() {
 		//svg_dissappear(1);
 		//svg_dissappear(2);
 		//svg_show(2);
-		//$.post('/Tennis/ParseQueryServlet','queryString='+$("#question").text()+'&name1='+players[0]+'&name2='+players[1]+'&numOfSets='+numOfSvgs, function(queryResult) {
-		$.post('/Tennis/ParseQueryServlet','queryString=11&name1=22&name2=33&numOfSets=4', function(queryResult) {
+		console.log("here"+$("#question").val());
+		$.post('/Tennis/ParseQueryServlet','queryString='+$("#question").val()+'&name1='+players[0]+'&name2='+players[1]+'&numOfSets='+numOfSvgs, function(queryResult) {
+		//$.post('/Tennis/ParseQueryServlet','queryString=11&name1=22&name2=33&numOfSets=4', function(queryResult) {
 			//console.log(queryResult);
-			transform(queryResult.status,queryResult.people,queryResult.character);
+			transform1(queryResult.status,queryResult.people,queryResult.character);
 		});
+	});
+	
+	$( "#filter" ).button({
+		text: true
+	})
+	.click(function() {
+		//svg_dissappear(0);
+		//svg_dissappear(1);
+		//svg_dissappear(2);
+		//svg_show(2);
+		//$.post('/Tennis/ParseQueryServlet','queryString='+$("#question").text()+'&name1='+players[0]+'&name2='+players[1]+'&numOfSets='+numOfSvgs, function(queryResult) {
+		//$.post('/Tennis/ParseQueryServlet','queryString=11&name1=22&name2=33&numOfSets=4', function(queryResult) {
+			//console.log(queryResult);
+		//	transform(queryResult.status,queryResult.people,queryResult.character);
+		//});
+		//alert(document.getElementById("s1").checked);
+		var svgStatusTmp = [];
+		var svgPeopleTmp = [];
+		var svgCharacterTmp = []; 
+		for(i=0;i<numOfSvgs;i++){
+			if(document.getElementById("s"+(i+1)).checked==true){
+				svgStatusTmp[i]=1;
+			}
+			else{
+				svgStatusTmp[i]=0;
+			}
+		}
+		if(document.getElementById("p1").checked==true){
+			svgPeopleTmp[0]=1;
+		}
+		else{
+			svgPeopleTmp[0]=0;
+		}
+
+		if(document.getElementById("p2").checked==true){
+			svgPeopleTmp[1]=1;
+		}
+		else{
+			svgPeopleTmp[1]=0;
+		}
+		if(document.getElementById("ACE").checked==true){
+			svgCharacterTmp[1]=1;
+		}
+		else{
+			svgCharacterTmp[1]=0;
+		}		
+		if(document.getElementById("DF").checked==true){
+			svgCharacterTmp[2]=1;
+		}
+		else{
+			svgCharacterTmp[2]=0;
+		}
+		if(document.getElementById("BH").checked==true){
+			svgCharacterTmp[3]=1;
+		}
+		else{
+			svgCharacterTmp[3]=0;
+		}
+		if(document.getElementById("FH").checked==true){
+			svgCharacterTmp[4]=1;
+		}
+		else{
+			svgCharacterTmp[4]=0;
+		}
+		if(document.getElementById("V").checked==true){
+			svgCharacterTmp[5]=1;
+		}
+		else{
+			svgCharacterTmp[5]=0;
+		}
+		if(document.getElementById("IO").checked==true){
+			svgCharacterTmp[6]=1;
+		}
+		else{
+			svgCharacterTmp[6]=0;
+		}
+		if(document.getElementById("ALL").checked==true){
+			svgCharacterTmp[0]=1;
+		}
+		else{
+			svgCharacterTmp[0]=0;
+		}
+		transform(svgStatusTmp,svgPeopleTmp,svgCharacterTmp);
 	});
 	
 	$( "#open" ).button({
@@ -89,8 +173,12 @@ $(document).ready(function() {
 	colors[1]="red";
 	
 	dataLoading();
-	//alert("here");
+	//alert(players[0]);
 });
+
+function filter(){
+	
+}
 
 function load(){
 	address=($("#url").val());
@@ -124,6 +212,7 @@ function dataLoading(){
 	
 	$( ".progress-label" ).text("Loading...");	
 	$( "#progressbar").show();
+	
 	$.post('/Tennis/ReadTennisLogServlet','address='+address, function(responseText) {
 		tennisMatch=responseText;
 		$( "#progressbar" ).progressbar( "value", 100 );
@@ -131,6 +220,13 @@ function dataLoading(){
 		players[1]=tennisMatch.player2;
 		//drawMatch();
 		initData();
+		$( "#ppl1" ).text(players[0].split(" ")[0]);
+		$( "#ppl2" ).text(players[1].split(" ")[0]);
+		for(i=numOfSvgs+1;i<=5;i++){
+			$( "#set"+i ).hide();
+			$( "#s"+i ).hide();
+		}
+		//alert(numOfSvgs);
 	});
 }
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<title>Current Matches</title>
+<script src="js/jquery.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$.post('/Tennis/ShowTennisServlet', function(responseText) {
+			tennisMatch=responseText;
+			for (var i = 0; i < tennisMatch.lists.length; i++){
+				createTable(tennisMatch.lists[i]);
+			}
+		});
+	});
+	
+	function createTable(tournament){
+		var table = document.createElement('table');
+		var tr = document.createElement('tr');   
+		var td = document.createElement('td');
+		var text = document.createTextNode(tournament.name);
+		td.appendChild(text);
+		tr.appendChild(td);
+		table.appendChild(tr);
+		for (var i = 0; i < tournament.lists.length; i++){
+		    tr = document.createElement('tr');   
+			td = document.createElement('td');
+			//text = document.createTextNode(tournament.lists[i].name);
+			//td.appendChild(text);
+			td.innerHTML="<a href = \"/Tennis/LiveTennisServlet?name="+tournament.lists[i].name+"\">"+tournament.lists[i].name+"</a>";
+			tr.appendChild(td);
+			table.appendChild(tr);
+		}
+		document.body.appendChild(table);
+	}
+</script>
+</head>
+
+<body>
+
+</body>
+</html>
