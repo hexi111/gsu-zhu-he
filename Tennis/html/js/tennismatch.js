@@ -25,199 +25,438 @@ var maxRally = 1;
 
 var svgLegend;
 
+var circleSize = 3;
+
 function checkboxChange(){
 	var svgPeopleTmp = [];
 	var svgCharacterTmp = [];
 	var changeFlag = false;
+	var color1 = "#ff8080";
+	var color2 = "black";
 
 	//alert("changeFlag="+changeFlag);	
 	if(document.getElementById("p1").checked==true){
 		svgPeopleTmp[0]=1;
+		document.getElementById("ppl1").style.fontWeight = "bold";
+		document.getElementById("ppl1").style.color = color1;
 	}
 	else{
+		document.getElementById("ppl1").style.fontWeight = "normal";
+		document.getElementById("ppl1").style.color = color2;
 		svgPeopleTmp[0]=0;
 	}
 
 	if(document.getElementById("p2").checked==true){
+		document.getElementById("ppl2").style.fontWeight = "bold";
+		document.getElementById("ppl2").style.color = color1;
 		svgPeopleTmp[1]=1;
 	}
 	else{
 		svgPeopleTmp[1]=0;
+		document.getElementById("ppl2").style.fontWeight = "normal";
+		document.getElementById("ppl2").style.color = color2;
 	}
+
 	if(document.getElementById("ACE").checked==true){
 		svgCharacterTmp[0]=1;
 		changeFlag = true;
+		document.getElementById("label_ACE").style.fontWeight = "bold";
+		document.getElementById("label_ACE").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[0]=0;
+		document.getElementById("label_ACE").style.fontWeight = "normal";
+		document.getElementById("label_ACE").style.color = color2;
 	}	
+	
 	if(document.getElementById("FF").checked==true){
 		svgCharacterTmp[1]=1;
 		changeFlag = true;
+		document.getElementById("label_FF").style.fontWeight = "bold";
+		document.getElementById("label_FF").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[1]=0;
-	}		
+		document.getElementById("label_FF").style.fontWeight = "normal";
+		document.getElementById("label_FF").style.color = color2;
+	}	
+		
 	if(document.getElementById("DF").checked==true){
 		svgCharacterTmp[2]=1;
 		changeFlag = true;
+		document.getElementById("label_DF").style.fontWeight = "bold";
+		document.getElementById("label_DF").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[2]=0;
+		document.getElementById("label_DF").style.fontWeight = "normal";
+		document.getElementById("label_DF").style.color = color2;
 	}
+	
 	if(document.getElementById("fhtopspin").checked==true){
 		svgCharacterTmp[3]=1;
 		changeFlag = true;
+		document.getElementById("label_fhtopspin").style.fontWeight = "bold";
+		document.getElementById("label_fhtopspin").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[3]=0;
+		document.getElementById("label_fhtopspin").style.fontWeight = "normal";
+		document.getElementById("label_fhtopspin").style.color = color2;
 	}
+	
 	if(document.getElementById("bhtopspin").checked==true){
 		svgCharacterTmp[4]=1;
 		changeFlag = true;
+		document.getElementById("label_bhtopspin").style.fontWeight = "bold";
+		document.getElementById("label_bhtopspin").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[4]=0;
+		document.getElementById("label_bhtopspin").style.fontWeight = "normal";
+		document.getElementById("label_bhtopspin").style.color = color2;
 	}
+	
 	if(document.getElementById("fhslice").checked==true){
 		svgCharacterTmp[5]=1;
 		changeFlag = true;
+		document.getElementById("label_fhslice").style.fontWeight = "bold";
+		document.getElementById("label_fhslice").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[5]=0;
+		document.getElementById("label_fhslice").style.fontWeight = "normal";
+		document.getElementById("label_fhslice").style.color = color2;
 	}
+	
 	if(document.getElementById("bhslice").checked==true){
 		svgCharacterTmp[6]=1;
 		changeFlag = true;
+		document.getElementById("label_bhslice").style.fontWeight = "bold";
+		document.getElementById("label_bhslice").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[6]=0;
+		document.getElementById("label_bhslice").style.fontWeight = "normal";
+		document.getElementById("label_bhslice").style.color = color2;
 	}
+	
 	if(document.getElementById("volley").checked==true){
 		svgCharacterTmp[7]=1;
 		changeFlag = true;
+		document.getElementById("label_volley").style.fontWeight = "bold";
+		document.getElementById("label_volley").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[7]=0;
+		document.getElementById("label_volley").style.fontWeight = "normal";
+		document.getElementById("label_volley").style.color = color2;
 	}
+	
 	if(document.getElementById("smash").checked==true){
 		svgCharacterTmp[8]=1;
 		changeFlag = true;
+		document.getElementById("label_smash").style.fontWeight = "bold";
+		document.getElementById("label_smash").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[8]=0;
+		document.getElementById("label_smash").style.fontWeight = "normal";
+		document.getElementById("label_smash").style.color = color2;
 	}
+	
 	if(document.getElementById("dropshot").checked==true){
 		svgCharacterTmp[9]=1;
 		changeFlag = true;
+		document.getElementById("label_dropshot").style.fontWeight = "bold";
+		document.getElementById("label_dropshot").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[9]=0;
+		document.getElementById("label_dropshot").style.fontWeight = "normal";
+		document.getElementById("label_dropshot").style.color = color2;
 	}
+	
 	if(document.getElementById("lob").checked==true){
 		svgCharacterTmp[10]=1;
 		changeFlag = true;
+		document.getElementById("label_lob").style.fontWeight = "bold";
+		document.getElementById("label_lob").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[10]=0;
+		document.getElementById("label_lob").style.fontWeight = "normal";
+		document.getElementById("label_lob").style.color = color2;
 	}
+	
 	if(document.getElementById("hvolley").checked==true){
 		svgCharacterTmp[11]=1;
 		changeFlag = true;
+		document.getElementById("label_hvolley").style.fontWeight = "bold";
+		document.getElementById("label_hvolley").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[11]=0;
+		document.getElementById("label_hvolley").style.fontWeight = "normal";
+		document.getElementById("label_hvolley").style.color = color2;
 	}
+	
 	if(document.getElementById("svolley").checked==true){
 		svgCharacterTmp[12]=1;
 		changeFlag = true;
+		document.getElementById("label_svolley").style.fontWeight = "bold";
+		document.getElementById("label_svolley").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[12]=0;
+		document.getElementById("label_svolley").style.fontWeight = "normal";
+		document.getElementById("label_svolley").style.color = color2;
 	}
+	
 	if(document.getElementById("winner").checked==true){
 		svgCharacterTmp[13]=1;
 		changeFlag = true;
+		document.getElementById("label_winner").style.fontWeight = "bold";
+		document.getElementById("label_winner").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[13]=0;
+		document.getElementById("label_winner").style.fontWeight = "normal";
+		document.getElementById("label_winner").style.color = color2;
 	}
+	
 	if(document.getElementById("UE").checked==true){
 		svgCharacterTmp[14]=1;
 		changeFlag = true;
+		document.getElementById("label_UE").style.fontWeight = "bold";
+		document.getElementById("label_UE").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[14]=0;
+		document.getElementById("label_UE").style.fontWeight = "normal";
+		document.getElementById("label_UE").style.color = color2;
 	}
+	
 	if(document.getElementById("FE").checked==true){
 		svgCharacterTmp[15]=1;
 		changeFlag = true;
+		document.getElementById("label_FE").style.fontWeight = "bold";
+		document.getElementById("label_FE").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[15]=0;
+		document.getElementById("label_FE").style.fontWeight = "normal";
+		document.getElementById("label_FE").style.color = color2;
 	}		
+	
 	if(document.getElementById("rally").checked==true){
 		svgCharacterTmp[16]=1;
 		changeFlag = true;
+		document.getElementById("label_rally").style.fontWeight = "bold";
+		document.getElementById("label_rally").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[16]=0;
+		document.getElementById("label_rally").style.fontWeight = "normal";
+		document.getElementById("label_rally").style.color = color2;
 	}
+	
 	if(document.getElementById("wide").checked==true){
 		svgCharacterTmp[17]=1;
 		changeFlag = true;
+		document.getElementById("label_wide").style.fontWeight = "bold";
+		document.getElementById("label_wide").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[17]=0;
+		document.getElementById("label_wide").style.fontWeight = "normal";
+		document.getElementById("label_wide").style.color = color2;
 	}
+	
 	if(document.getElementById("body").checked==true){
 		svgCharacterTmp[18]=1;
 		changeFlag = true;
+		document.getElementById("label_body").style.fontWeight = "bold";
+		document.getElementById("label_body").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[18]=0;
+		document.getElementById("label_body").style.fontWeight = "normal";
+		document.getElementById("label_body").style.color = color2;
 	}
+	
 	if(document.getElementById("downthet").checked==true){
 		svgCharacterTmp[19]=1;
 		changeFlag = true;
+		document.getElementById("label_downthet").style.fontWeight = "bold";
+		document.getElementById("label_downthet").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[19]=0;
+		document.getElementById("label_downthet").style.fontWeight = "normal";
+		document.getElementById("label_downthet").style.color = color2;
 	}
+	
 	if(document.getElementById("bpoints").checked==true){
 		svgCharacterTmp[20]=1;
 		changeFlag = true;
+		document.getElementById("label_bpoints").style.fontWeight = "bold";
+		document.getElementById("label_bpoints").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[20]=0;
+		document.getElementById("label_bpoints").style.fontWeight = "normal";
+		document.getElementById("label_bpoints").style.color = color2;
 	}
+	
 	if(document.getElementById("gpoints").checked==true){
 		svgCharacterTmp[21]=1;
 		changeFlag = true;
+		document.getElementById("label_gpoints").style.fontWeight = "bold";
+		document.getElementById("label_gpoints").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[21]=0;
+		document.getElementById("label_gpoints").style.fontWeight = "normal";
+		document.getElementById("label_gpoints").style.color = color2;
 	}
+	
 	if(document.getElementById("spoints").checked==true){
 		svgCharacterTmp[22]=1;
 		changeFlag = true;
+		document.getElementById("label_spoints").style.fontWeight = "bold";
+		document.getElementById("label_spoints").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[22]=0;
+		document.getElementById("label_spoints").style.fontWeight = "normal";
+		document.getElementById("label_spoints").style.color = color2;
 	}
+	
 	if(document.getElementById("mpoints").checked==true){
 		svgCharacterTmp[23]=1;
 		changeFlag = true;
+		document.getElementById("label_mpoints").style.fontWeight = "bold";
+		document.getElementById("label_mpoints").style.color = color1;
 	}
 	else{
 		svgCharacterTmp[23]=0;
+		document.getElementById("label_mpoints").style.fontWeight = "normal";
+		document.getElementById("label_mpoints").style.color = color2;
 	}
-	//alert("changeFlag="+changeFlag);
-	if(changeFlag == true){
-		svgCharacterTmp[24] = 0;
+	
+	if(document.getElementById("shallow").checked==true){
+		svgCharacterTmp[24]=1;
+		changeFlag = true;
+		document.getElementById("label_shallow").style.fontWeight = "bold";
+		document.getElementById("label_shallow").style.color = color1;
 	}
 	else{
-		svgCharacterTmp[24] = 1;	
+		svgCharacterTmp[24]=0;
+		document.getElementById("label_shallow").style.fontWeight = "normal";
+		document.getElementById("label_shallow").style.color = color2;
+	}
+	
+	if(document.getElementById("mdeep").checked==true){
+		svgCharacterTmp[25]=1;
+		changeFlag = true;
+		document.getElementById("label_mdeep").style.fontWeight = "bold";
+		document.getElementById("label_mdeep").style.color = color1;
+	}
+	else{
+		svgCharacterTmp[25]=0;
+		document.getElementById("label_mdeep").style.fontWeight = "normal";
+		document.getElementById("label_mdeep").style.color = color2;
+	}
+	
+	if(document.getElementById("vdeep").checked==true){
+		svgCharacterTmp[26]=1;
+		changeFlag = true;
+		document.getElementById("label_vdeep").style.fontWeight = "bold";
+		document.getElementById("label_vdeep").style.color = color1;
+	}
+	else{
+		svgCharacterTmp[26]=0;
+		document.getElementById("label_vdeep").style.fontWeight = "normal";
+		document.getElementById("label_vdeep").style.color = color2;
+	}
+	
+	if(document.getElementById("approach").checked==true){
+		svgCharacterTmp[27]=1;
+		changeFlag = true;
+		document.getElementById("label_approach").style.fontWeight = "bold";
+		document.getElementById("label_approach").style.color = color1;
+	}
+	else{
+		svgCharacterTmp[27]=0;
+		document.getElementById("label_approach").style.fontWeight = "normal";
+		document.getElementById("label_approach").style.color = color2;
+	}
+	
+	if(document.getElementById("hitnet").checked==true){
+		svgCharacterTmp[28]=1;
+		changeFlag = true;
+		document.getElementById("label_hitnet").style.fontWeight = "bold";
+		document.getElementById("label_hitnet").style.color = color1;
+	}
+	else{
+		svgCharacterTmp[28]=0;
+		document.getElementById("label_hitnet").style.fontWeight = "normal";
+		document.getElementById("label_hitnet").style.color = color2;
+	}
+	
+	if(document.getElementById("hitbaseline").checked==true){
+		svgCharacterTmp[29]=1;
+		changeFlag = true;
+		document.getElementById("label_hitbaseline").style.fontWeight = "bold";
+		document.getElementById("label_hitbaseline").style.color = color1;
+	}
+	else{
+		svgCharacterTmp[29]=0;
+		document.getElementById("label_hitbaseline").style.fontWeight = "normal";
+		document.getElementById("label_hitbaseline").style.color = color2;
+	}
+	
+	if(document.getElementById("rfh").checked==true){
+		svgCharacterTmp[30]=1;
+		changeFlag = true;
+		document.getElementById("label_rfh").style.fontWeight = "bold";
+		document.getElementById("label_rfh").style.color = color1;
+	}
+	else{
+		svgCharacterTmp[30]=0;
+		document.getElementById("label_rfh").style.fontWeight = "normal";
+		document.getElementById("label_rfh").style.color = color2;
+	}
+	if(document.getElementById("rbh").checked==true){
+		svgCharacterTmp[31]=1;
+		changeFlag = true;
+		document.getElementById("label_rbh").style.fontWeight = "bold";
+		document.getElementById("label_rbh").style.color = color1;
+	}
+	else{
+		svgCharacterTmp[31]=0;
+		document.getElementById("label_rbh").style.fontWeight = "normal";
+		document.getElementById("label_rbh").style.color = color2;
+	}
+	if(document.getElementById("rmid").checked==true){
+		svgCharacterTmp[32]=1;
+		changeFlag = true;
+		document.getElementById("label_rmid").style.fontWeight = "bold";
+		document.getElementById("label_rmid").style.color = color1;
+	}
+	else{
+		svgCharacterTmp[32]=0;
+		document.getElementById("label_rmid").style.fontWeight = "normal";
+		document.getElementById("label_rmid").style.color = color2;
+	}
+	
+	//alert("changeFlag="+changeFlag);
+	if(changeFlag == true){
+		svgCharacterTmp[33] = 0;
+	}
+	else{
+		svgCharacterTmp[33] = 1;	
 	}
 	transform(svgPeopleTmp,svgCharacterTmp);
 }
@@ -301,7 +540,7 @@ $(document).ready(function() {
 	colors[1]="red";
 	
 	dataLoading();
-	for(i = 0; i<24; i++){
+	for(i = 0; i<33; i++){
 		stats[i] = new Object();
 	}
 	charName[0] = "ACE";
@@ -328,6 +567,15 @@ $(document).ready(function() {
 	charName[21] = "Game Points";
 	charName[22] = "Set Points";
 	charName[23] = "Match Points";
+	charName[24] = "Shallow Return";
+	charName[25] = "Deep Return";
+	charName[26] = "Very Deep Return";
+	charName[27] = "Approach";
+	charName[28] = "Hit Net";
+	charName[29] = "Hit BaseLine";
+	charName[30] = "Return to Forehand";
+	charName[31] = "Return to Backhand";
+	charName[32] = "Return to Middle";
 });
 
 function dataLoading(){
@@ -347,6 +595,11 @@ function dataLoading(){
 	$( ".progress-label" ).text("Loading...");	
 	$( "#progressbar").show();
 	id = getUrlVars()["id"];
+	console.log("before"+circleSize);
+	if(getUrlVars()["circleSize"]!=undefined){
+		circleSize = getUrlVars()["circleSize"];
+	}
+	console.log(circleSize);
 	//alert(id);
 	$.post('/Tennis/TennisReaderServlet','type=0&id='+id, function(responseText) {
 		tennisMatch=responseText;
@@ -416,7 +669,9 @@ function addTitle(){
 	.attr("class", "legend")
 	.attr("height", "100%")
 	.attr("width", "100%")
-	.attr('transform', 'translate('+(div_width/2-60)+','+0+')')  
+	.attr('transform', 'translate('+10+','+0+')')  
+	//.attr('transform', 'translate('+(div_width/2-100)+','+0+')')  
+	//.attr('transform', 'translate('+(div_width/2-60)+','+0+')')  
 	 
 	legend.append("rect")
 	.attr("x", 0)
@@ -452,9 +707,19 @@ function addTitle(){
 	legend.append("text")
 	.attr("x", tmp)
 	.attr("y", 15)
+	.attr("id","player2")
 	.attr("font-size","15px")
 	.attr("font-family","Arial,Helvetica, sans-serif")
 	.text(players[1]);
+	
+	tmp = tmp + d3.select("#player2").node().getComputedTextLength() + 20;
+
+	legend.append("text")
+	.attr("x", tmp)
+	.attr("y", 15)
+	.attr("font-size","15px")
+	.attr("font-family","Arial,Helvetica, sans-serif")
+	.text("("+tennisMatch.year+" "+tennisMatch.tournament+" "+tennisMatch.round+")");
 }
 
 function getUrlVars() {

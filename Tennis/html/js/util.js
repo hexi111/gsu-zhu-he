@@ -42,7 +42,7 @@ function play(){
 
 function data_update(){ 					
 	var numOfSets=tennisMatch.host+tennisMatch.guest;
-	for(k=0;k<24;k++){
+	for(k=0;k<33;k++){
 		stats[k].hostsum = 0;
 		stats[k].guestsum = 0;		
 	}
@@ -53,7 +53,7 @@ function data_update(){
 			.attr("id","status"+i)
       		.attr("x",width_axe)
       		.attr("y", ($("#content").height()-14-20)/numOfSets - height_yaxe + 20);
-		for(k=0;k<24;k++){
+		for(k=0;k<33;k++){
 			stats[k].hostcount = 0;
 			stats[k].guestcount = 0;
 		}
@@ -446,6 +446,151 @@ function data_update(){
 				}
 			}
 			if(svgCharacter[24]==1){
+				if(dataSet[i].player1.points[j].shallow==1){
+					stats[24].hostcount ++;
+					stats[24].hostsum ++;
+					if(svgPeople[0]==1){
+						dataSet[i].player1.points[j].enabled = 1;
+					}
+				}
+				else if(dataSet[i].player2.points[j].shallow==1){
+					stats[24].guestcount ++;
+					stats[24].guestsum ++;
+					if(svgPeople[1]==1){
+						dataSet[i].player2.points[j].enabled = 1;
+					}
+				}
+			}
+			if(svgCharacter[25]==1){
+				if(dataSet[i].player1.points[j].mdeep==1){
+					stats[25].hostcount ++;
+					stats[25].hostsum ++;
+					if(svgPeople[0]==1){
+						dataSet[i].player1.points[j].enabled = 1;
+					}
+				}
+				else if(dataSet[i].player2.points[j].mdeep==1){
+					stats[25].guestcount ++;
+					stats[25].guestsum ++;
+					if(svgPeople[1]==1){
+						dataSet[i].player2.points[j].enabled = 1;
+					}
+				}
+			}
+			if(svgCharacter[26]==1){
+				if(dataSet[i].player1.points[j].vdeep==1){
+					stats[26].hostcount ++;
+					stats[26].hostsum ++;
+					if(svgPeople[0]==1){
+						dataSet[i].player1.points[j].enabled = 1;
+					}
+				}
+				else if(dataSet[i].player2.points[j].vdeep==1){
+					stats[26].guestcount ++;
+					stats[26].guestsum ++;
+					if(svgPeople[1]==1){
+						dataSet[i].player2.points[j].enabled = 1;
+					}
+				}
+			}
+			
+			if(svgCharacter[27]==1){
+				if(dataSet[i].player1.points[j].approach==1){
+					stats[27].hostcount ++;
+					stats[27].hostsum ++;
+					if(svgPeople[0]==1){
+						dataSet[i].player1.points[j].enabled = 1;
+					}
+				}
+				else if(dataSet[i].player2.points[j].approach==1){
+					stats[27].guestcount ++;
+					stats[27].guestsum ++;
+					if(svgPeople[1]==1){
+						dataSet[i].player2.points[j].enabled = 1;
+					}
+				}
+			}
+			if(svgCharacter[28]==1){
+				if(dataSet[i].player1.points[j].hitnet==1){
+					stats[28].hostcount ++;
+					stats[28].hostsum ++;
+					if(svgPeople[0]==1){
+						dataSet[i].player1.points[j].enabled = 1;
+					}
+				}
+				else if(dataSet[i].player2.points[j].hitnet==1){
+					stats[28].guestcount ++;
+					stats[28].guestsum ++;
+					if(svgPeople[1]==1){
+						dataSet[i].player2.points[j].enabled = 1;
+					}
+				}
+			}
+			if(svgCharacter[29]==1){
+				if(dataSet[i].player1.points[j].hitbaseline==1){
+					stats[29].hostcount ++;
+					stats[29].hostsum ++;
+					if(svgPeople[0]==1){
+						dataSet[i].player1.points[j].enabled = 1;
+					}
+				}
+				else if(dataSet[i].player2.points[j].hitbaseline==1){
+					stats[29].guestcount ++;
+					stats[29].guestsum ++;
+					if(svgPeople[1]==1){
+						dataSet[i].player2.points[j].enabled = 1;
+					}
+				}
+			}
+			if(svgCharacter[30]==1){
+				if(dataSet[i].player1.points[j].rfh==1){
+					stats[30].hostcount ++;
+					stats[30].hostsum ++;
+					if(svgPeople[0]==1){
+						dataSet[i].player1.points[j].enabled = 1;
+					}
+				}
+				else if(dataSet[i].player2.points[j].rfh==1){
+					stats[30].guestcount ++;
+					stats[30].guestsum ++;
+					if(svgPeople[1]==1){
+						dataSet[i].player2.points[j].enabled = 1;
+					}
+				}
+			}
+			if(svgCharacter[31]==1){
+				if(dataSet[i].player1.points[j].rbh==1){
+					stats[31].hostcount ++;
+					stats[31].hostsum ++;
+					if(svgPeople[0]==1){
+						dataSet[i].player1.points[j].enabled = 1;
+					}
+				}
+				else if(dataSet[i].player2.points[j].rbh==1){
+					stats[31].guestcount ++;
+					stats[31].guestsum ++;
+					if(svgPeople[1]==1){
+						dataSet[i].player2.points[j].enabled = 1;
+					}
+				}
+			}
+			if(svgCharacter[32]==1){
+				if(dataSet[i].player1.points[j].rmid==1){
+					stats[32].hostcount ++;
+					stats[32].hostsum ++;
+					if(svgPeople[0]==1){
+						dataSet[i].player1.points[j].enabled = 1;
+					}
+				}
+				else if(dataSet[i].player2.points[j].rmid==1){
+					stats[32].guestcount ++;
+					stats[32].guestsum ++;
+					if(svgPeople[1]==1){
+						dataSet[i].player2.points[j].enabled = 1;
+					}
+				}
+			}
+			if(svgCharacter[33]==1){
 				if(svgPeople[0]==1){
 					dataSet[i].player1.points[j].enabled = 1;
 				}
@@ -519,7 +664,7 @@ function data_update(){
 			.text(stats[16].hostcount+"\u00A0\u00A0\u00A0");
 			
 		}
-		for(k=20;k<24;k++){
+		for(k=20;k<33;k++){
 			if(svgCharacter[k] == 1){
 				txt.append("svg:tspan")
 				.style("fill", "black")
@@ -555,7 +700,7 @@ function svg_update(index){
 	var points1=svgs[index].selectAll("circle.host").data(dataSet[index].player1.points);	
 	var points2=svgs[index].selectAll("circle.guest").data(dataSet[index].player2.points);	
 
-	if(svgCharacter[24] == 1 && svgPeople[0] == 1 && svgPeople[1] == 1){
+	if(svgCharacter[33] == 1 && svgPeople[0] == 1 && svgPeople[1] == 1){
 		points1.transition().delay(500).duration(100)
 		.style("stroke", function(d){return d.tie2;})
 		.style("fill", function(d){return d.tie1;});
@@ -563,13 +708,29 @@ function svg_update(index){
 		.style("stroke", function(d){return d.tie2;})
 		.style("fill", function(d){return d.tie1;});
 	}
-	else{
+	else if(svgCharacter[33] == 1){
 		points1.transition().delay(500).duration(100)
 		.style("stroke", function(d){if(d.enabled == 1 || d.enabled == 5) return "blue";if(d.enabled == 0) return "blue"; if(d.enabled == 6) return "green";if(d.enabled == 3 ) return "green"; return "red";})
 		.style("fill", function(d){if(d.enabled == 1 || d.enabled == 5) return "blue";if(d.enabled == 0 || d.enabled == 6) return "white";if(d.enabled == 3 ) return "green"; return "red";})
 		points2.transition().delay(500).duration(100)
 		.style("stroke", function(d){if(d.enabled == 1 || d.enabled == 4) return "red";if(d.enabled == 0) return "red"; if(d.enabled == 6) return "green";if(d.enabled == 3 ) return "green"; return "blue";})
 		.style("fill", function(d){if(d.enabled == 1 || d.enabled == 4) return "red";if(d.enabled == 0 || d.enabled == 6) return "white";if(d.enabled == 3 ) return "green"; return "blue";})
+	}
+	else{
+		/*
+		points1.transition().delay(500).duration(100)
+		.style("stroke", function(d){if(d.enabled == 1 || d.enabled == 5) return "blue";if(d.enabled == 0) return "blue"; if(d.enabled == 6) return "green";if(d.enabled == 3 ) return "green"; return "red";})
+		.style("fill", function(d){if(d.enabled == 1 || d.enabled == 5) return "blue";if(d.enabled == 0 || d.enabled == 6) return "white";if(d.enabled == 3 ) return "green"; return "red";})
+		points2.transition().delay(500).duration(100)
+		.style("stroke", function(d){if(d.enabled == 1 || d.enabled == 4) return "red";if(d.enabled == 0) return "red"; if(d.enabled == 6) return "green";if(d.enabled == 3 ) return "green"; return "blue";})
+		.style("fill", function(d){if(d.enabled == 1 || d.enabled == 4) return "red";if(d.enabled == 0 || d.enabled == 6) return "white";if(d.enabled == 3 ) return "green"; return "blue";})
+		*/
+		points1.transition().delay(500).duration(100)
+		.style("stroke", function(d){if(d.enabled == 1 || d.enabled == 5) return "blue";if(d.enabled == 0) return "blue"; if(d.enabled == 6) return "green";if(d.enabled == 3 ) return "green"; return "red";})
+		.style("fill", function(d){if(d.enabled == 1 || d.enabled == 5) return "black";if(d.enabled == 0 || d.enabled == 6) return "white";if(d.enabled == 3 ) return "black"; return "black";})
+		points2.transition().delay(500).duration(100)
+		.style("stroke", function(d){if(d.enabled == 1 || d.enabled == 4) return "red";if(d.enabled == 0) return "red"; if(d.enabled == 6) return "green";if(d.enabled == 3 ) return "green"; return "blue";})
+		.style("fill", function(d){if(d.enabled == 1 || d.enabled == 4) return "black";if(d.enabled == 0 || d.enabled == 6) return "white";if(d.enabled == 3 ) return "black"; return "black";})
 	}
 }
 
@@ -806,6 +967,63 @@ function initData(){
 				else{
 					dataSet[i].player1.points[numOfPoints].downthet=0;				
 				}
+				
+				if(tennisMatch.sets[i].games[j].scores[k].returnDepth==1 && tennisMatch.sets[i].games[j].scores[k].serving==1){
+					dataSet[i].player1.points[numOfPoints].shallow=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].shallow=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].returnDepth==2 && tennisMatch.sets[i].games[j].scores[k].serving==1){
+					dataSet[i].player1.points[numOfPoints].mdeep=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].mdeep=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].returnDepth==3 && tennisMatch.sets[i].games[j].scores[k].serving==1){
+					dataSet[i].player1.points[numOfPoints].vdeep=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].vdeep=0;				
+				}
+				
+				if(tennisMatch.sets[i].games[j].scores[k].court11==1){
+					dataSet[i].player1.points[numOfPoints].approach=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].approach=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].court12==1){
+					dataSet[i].player1.points[numOfPoints].hitnet=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].hitnet=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].court13==1){
+					dataSet[i].player1.points[numOfPoints].hitbaseline=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].hitbaseline=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].return11>0){
+					dataSet[i].player1.points[numOfPoints].rfh=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].rfh=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].return12>0){
+					dataSet[i].player1.points[numOfPoints].rbh=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].rbh=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].return13>0){
+					dataSet[i].player1.points[numOfPoints].rmid=1;				
+				}
+				else{
+					dataSet[i].player1.points[numOfPoints].rmid=0;				
+				}
+				
 				if(tennisMatch.sets[i].games[j].scores[k].ace==true && tennisMatch.sets[i].games[j].scores[k].serving==0){
 					dataSet[i].player1.points[numOfPoints].ace=1;				
 				}
@@ -945,6 +1163,63 @@ function initData(){
 				else{
 					dataSet[i].player2.points[numOfPoints].downthet=0;				
 				}
+				
+				if(tennisMatch.sets[i].games[j].scores[k].returnDepth==1 && tennisMatch.sets[i].games[j].scores[k].serving==0){
+					dataSet[i].player2.points[numOfPoints].shallow=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].shallow=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].returnDepth==2 && tennisMatch.sets[i].games[j].scores[k].serving==0){
+					dataSet[i].player2.points[numOfPoints].mdeep=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].mdeep=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].returnDepth==3 && tennisMatch.sets[i].games[j].scores[k].serving==0){
+					dataSet[i].player2.points[numOfPoints].vdeep=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].vdeep=0;				
+				}
+
+				if(tennisMatch.sets[i].games[j].scores[k].court21==1){
+					dataSet[i].player2.points[numOfPoints].approach=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].approach=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].court22==1){
+					dataSet[i].player2.points[numOfPoints].hitnet=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].hitnet=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].court23==1){
+					dataSet[i].player2.points[numOfPoints].hitbaseline=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].hitbaseline=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].return21>0){
+					dataSet[i].player2.points[numOfPoints].rfh=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].rfh=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].return22>0){
+					dataSet[i].player2.points[numOfPoints].rbh=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].rbh=0;				
+				}
+				if(tennisMatch.sets[i].games[j].scores[k].return23>0){
+					dataSet[i].player2.points[numOfPoints].rmid=1;				
+				}
+				else{
+					dataSet[i].player2.points[numOfPoints].rmid=0;				
+				}
+				
 
 				if(tennisMatch.sets[i].games[j].scores[k].ace==true && tennisMatch.sets[i].games[j].scores[k].serving==1){
 					dataSet[i].player2.points[numOfPoints].ace=1;				
@@ -1093,6 +1368,15 @@ function initData(){
 	svgCharacter[21]=0;
 	svgCharacter[22]=0;
 	svgCharacter[23]=0;
+	svgCharacter[24]=0;
+	svgCharacter[25]=0;
+	svgCharacter[26]=0;
+	svgCharacter[27]=0;
+	svgCharacter[28]=0;
+	svgCharacter[29]=0;
+	svgCharacter[30]=0;
+	svgCharacter[31]=0;
+	svgCharacter[32]=0;
 	addTitle();
 }
 
@@ -1181,7 +1465,7 @@ function paintPoints(){
 	    	if(d.hoffset!="") {
 	    		var tmp = d.hoffset*3600+d.moffset*60+d.soffset*1;
 	    		//alert(tmp);
-	    		$("#fake").attr("href", "http://www.youtube.com/embed/brupeRLqZfg?autoplay=1&start="+tmp);
+	    		$("#fake").attr("href", tennisMatch.matchURl+"?autoplay=1&start="+tmp);
 				$("#fake").fancybox().click();
 	    	}
 	    })
@@ -1194,7 +1478,7 @@ function paintPoints(){
 		points1.transition().delay(2000).duration(1000)
 		.attr("cx", function(d, j) { return d.cx; })    
 		.attr("cy", function(d, j) { return d.cy; }) 
-		.attr("r",3);	
+		.attr("r",circleSize);	
 
 		var points2=svgs[i].selectAll("circle.guest").data(dataSet[i].player2.points);	
 		points2.enter().append("circle")
@@ -1220,7 +1504,7 @@ function paintPoints(){
 			if(d.hoffset!="") {
 				var tmp = d.hoffset*3600+d.moffset*60+d.soffset*1;
 				//alert(tmp);
-				$("#fake").attr("href", "http://www.youtube.com/embed/brupeRLqZfg?autoplay=1&start="+tmp);
+				$("#fake").attr("href", tennisMatch.matchURl+"?autoplay=1&start="+tmp);
 				$("#fake").fancybox().click();
 			}
 	    })
@@ -1230,7 +1514,7 @@ function paintPoints(){
 		points2.transition().delay(2000).duration(1000)
 		.attr("cx", function(d, j) { return d.cx; })    
 		.attr("cy", function(d, j) { return d.cy; }) 
-		.attr("r",3);
+		.attr("r",circleSize);
 	}
 }
 

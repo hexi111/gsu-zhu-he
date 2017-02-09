@@ -5,9 +5,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 <title>Tennis Match Visualization</title>
-<link rel="stylesheet" href="css/jquery-ui.css">
-<link rel="stylesheet" href="css/theme.css">
-<link rel="stylesheet" href="css/tennismatch.css">
+<link rel="stylesheet" href="css/jquery-ui.css" />
+<link rel="stylesheet" href="css/theme.css" />
+<link rel="stylesheet" href="css/tennismatch.css" />
 <script src="http://www.youtube.com/player_api"></script>
 <script src="js/jquery.js"></script>
 <script src="js/jquery-ui.js"></script> 
@@ -32,41 +32,53 @@
 			<label id="time"> Time </label>
 			</center>
 			</br>
-			&nbsp;Wide <input type="checkbox" name="features" id="wide" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Body <input type="checkbox" name="features" id="body" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Down the T <input type="checkbox" name="features" id="downthet" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_wide">Wide</label> <input type="checkbox" name="features" id="wide" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_body">Body</label> <input type="checkbox" name="features" id="body" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_downthet">Down the T</label> <input type="checkbox" name="features" id="downthet" unchecked onchange = "checkboxChange(this)"> </br>
 			<hr>
-			&nbsp;ACE <input type="checkbox" name="features" id="ACE" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Fault <input type="checkbox" name="features" id="FF" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Double Fault <input type="checkbox" name="features" id="DF" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_shallow">Shallow</label> <input type="checkbox" name="features" id="shallow" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_mdeep">Deep</label> <input type="checkbox" name="features" id="mdeep" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_vdeep">Very Deep</label> <input type="checkbox" name="features" id="vdeep" unchecked onchange = "checkboxChange(this)"> </br>
 			<hr>
-			&nbsp;FH<input type="checkbox" name="features" id="fhtopspin" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;BH<input type="checkbox" name="features" id="bhtopspin" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;FH slice<input type="checkbox" name="features" id="fhslice" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;BH slice <input type="checkbox" name="features" id="bhslice" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_approach">Approach</label> <input type="checkbox" name="features" id="approach" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_hitnet">Hit Net</label> <input type="checkbox" name="features" id="hitnet" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_hitbaseline">Hit BaseLine</label> <input type="checkbox" name="features" id="hitbaseline" unchecked onchange = "checkboxChange(this)"> </br>
 			<hr>
-			&nbsp;Volley <input type="checkbox" name="features" id="volley" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Smash <input type="checkbox" name="features" id="smash" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_rfh">Return to FH</label> <input type="checkbox" name="features" id="rfh" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_rbh">Return to BH</label> <input type="checkbox" name="features" id="rbh" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_rmid">Return to Mid</label> <input type="checkbox" name="features" id="rmid" unchecked onchange = "checkboxChange(this)"> </br>
 			<hr>
-			&nbsp;Drop shot<input type="checkbox" name="features" id="dropshot" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Lob<input type="checkbox" name="features" id="lob" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Half-Volley<input type="checkbox" name="features" id="hvolley" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Swing-Volley<input type="checkbox" name="features" id="svolley" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_ACE">ACE</label> <input type="checkbox" name="features" id="ACE" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_FF">Fault</label> <input type="checkbox" name="features" id="FF" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_DF">Double Fault</label> <input type="checkbox" name="features" id="DF" unchecked onchange = "checkboxChange(this)"> </br>
 			<hr>
-			&nbsp;Winner<input type="checkbox" name="features" id="winner" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Unforced Err<input type="checkbox" name="features" id="UE" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Forced Err<input type="checkbox" name="features" id="FE" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_fhtopspin">FH</label> <input type="checkbox" name="features" id="fhtopspin" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_bhtopspin">BH</label> <input type="checkbox" name="features" id="bhtopspin" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_fhslice">FH slice</label> <input type="checkbox" name="features" id="fhslice" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_bhslice">BH slice</label> <input type="checkbox" name="features" id="bhslice" unchecked onchange = "checkboxChange(this)"> </br>
 			<hr>
-			&nbsp;Rally >= <label id="rallyvalue"> 1 </label><input type="checkbox" name="features" id="rally" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_volley">Volley</label> <input type="checkbox" name="features" id="volley" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_smash">Smash</label> <input type="checkbox" name="features" id="smash" unchecked onchange = "checkboxChange(this)"> </br>
+			<hr>
+			&nbsp;<label id="label_dropshot">Drop shot</label> <input type="checkbox" name="features" id="dropshot" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_lob">Lob</label> <input type="checkbox" name="features" id="lob" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_hvolley">Half-Volley</label> <input type="checkbox" name="features" id="hvolley" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_svolley">Swing-Volley</label><input type="checkbox" name="features" id="svolley" unchecked onchange = "checkboxChange(this)"> </br>
+			<hr>
+			&nbsp;<label id="label_winner">Winner</label> <input type="checkbox" name="features" id="winner" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_UE">Unforced Err</label> <input type="checkbox" name="features" id="UE" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_FE">Forced Err</label> <input type="checkbox" name="features" id="FE" unchecked onchange = "checkboxChange(this)"> </br>
+			<hr>
+			&nbsp;<label id="label_rally">Rally >=</label> <label id="rallyvalue"> 1 </label><input type="checkbox" name="features" id="rally" unchecked onchange = "checkboxChange(this)"> </br>
 			<div id="slider" style="width: 100px"></div>			
 			<hr>
-			&nbsp;Break Points<input type="checkbox" name="features" id="bpoints" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Game Points<input type="checkbox" name="features" id="gpoints" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Set Points<input type="checkbox" name="features" id="spoints" unchecked onchange = "checkboxChange(this)"> </br>
-			&nbsp;Match Points<input type="checkbox" name="features" id="mpoints" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_bpoints">Break Points</label> <input type="checkbox" name="features" id="bpoints" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_gpoints">Game Points</label> <input type="checkbox" name="features" id="gpoints" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_spoints">Set Points</label> <input type="checkbox" name="features" id="spoints" unchecked onchange = "checkboxChange(this)"> </br>
+			&nbsp;<label id="label_mpoints">Match Points</label> <input type="checkbox" name="features" id="mpoints" unchecked onchange = "checkboxChange(this)"> </br>
 			<hr>
-			&nbsp;<label id="ppl1">People1 </label><input type="checkbox" name="features" id="p1" checked onchange = "checkboxChange(this)"></br>
-			&nbsp;<label id="ppl2">People2 </label><input type="checkbox" name="features" id="p2" checked onchange = "checkboxChange(this)"></br>
+			&nbsp;<label id="ppl1" style="font-weight:bold;color:#ff8080">People1 </label><input type="checkbox" name="features" id="p1" checked onchange = "checkboxChange(this)"></br>
+			&nbsp;<label id="ppl2" style="font-weight:bold;color:#ff8080">People2 </label><input type="checkbox" name="features" id="p2" checked onchange = "checkboxChange(this)"></br>
 			<hr>
 			<!--input type="submit" id = "filter" value="Query" style="font-size:12px;width:65%;display: block;margin-left: auto; margin-right: auto "> 
 			</br-->

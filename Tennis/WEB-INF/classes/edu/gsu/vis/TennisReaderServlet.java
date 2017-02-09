@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -25,6 +26,8 @@ public class TennisReaderServlet extends HttpServlet{
 		
 	private List <TennisMatch> matches = new ArrayList <TennisMatch> ();
 	private Res result = new Res();
+	private HashMap <String, TennisMatch> data  = new HashMap <String, TennisMatch> ();
+	private HashSet <String> lefty = new HashSet <String> ();
 	
 	private class Res{
 		List <AA> output = new ArrayList<AA>();
@@ -33,20 +36,48 @@ public class TennisReaderServlet extends HttpServlet{
 	} 
 	
 	public void init() throws ServletException {
+		addLefty();
 		build();
+		detectCriticalMoment();
 		buildTournament();
 		buildTournament1();
 		buildTournament2();
-		detectCriticalMoment();
 		genMatchReport();
+		convertArrayToMap();
 	}
 	
+	public void addLefty(){
+		lefty.add("Rafael Nadal");
+		lefty.add("John McEnroe");
+		lefty.add("Albert Ramos-Vinolas");
+		lefty.add("Feliciano Lopez");
+		lefty.add("Martin Klizan");
+		lefty.add("Gilles Muller");
+		lefty.add("Fernando Verdasco");
+		lefty.add("Federico Delbonis");
+		lefty.add("Jiri Vesely");
+		lefty.add("Guido Pella");
+		lefty.add("Adrian Mannarino");
+		lefty.add("Thomaz Bellucci");
+		lefty.add("Facundo Bagnis");
+		lefty.add("Gerald Melzer");
+		lefty.add("Horacio Zeballos");
+		lefty.add("Donald Young");
+		lefty.add("Yoshihito Nishioka");
+	}
+	
+	public void convertArrayToMap(){
+		for(TennisMatch t:matches){
+			data.put(t.matchId, t);
+		}
+	}
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		String type = request.getParameter("type");
 		//System.out.println("type="+type);
 		if(type.equals("0")){
-			System.out.println("id="+Integer.valueOf(request.getParameter("id")));
-			String json = new Gson().toJson(matches.get(Integer.valueOf(request.getParameter("id"))));
+			//System.out.println("id="+Integer.valueOf(request.getParameter("id")));
+			//String json = new Gson().toJson(matches.get(Integer.valueOf(request.getParameter("id"))));
+			String json = new Gson().toJson(data.get(request.getParameter("id")));
 			response.setContentType("text/json");  
 			response.setCharacterEncoding("UTF-8"); 
 			response.getWriter().write(json);
@@ -111,6 +142,9 @@ public class TennisReaderServlet extends HttpServlet{
 					cc.player1 = ts.player1;
 					cc.player2 = ts.player2;
 					cc.matchId = ts.matchId;
+					if(!ts.matchURl.equals("")){
+						cc.video = 1;
+					}
 				}
 			}
 		}
@@ -165,6 +199,9 @@ public class TennisReaderServlet extends HttpServlet{
 					c.player1 = ts.player1;
 					c.player2 = ts.player2;
 					c.matchId = ts.matchId;
+					if(!ts.matchURl.equals("")){
+						c.video = 1;
+					}
 				}
 			}
 		}
@@ -249,6 +286,9 @@ public class TennisReaderServlet extends HttpServlet{
 					c.player1 = t.player1;
 					c.player2 = t.player2;
 					c.matchId = t.matchId;
+					if(!t.matchURl.equals("")){
+						c.video = 1;
+					}
 				}
 			}
 			TennisMatch tm = tmpMIT.matches.get(0);
@@ -286,7 +326,9 @@ public class TennisReaderServlet extends HttpServlet{
 	private class CCCC{
 		String player1;
 		String player2;
-		int matchId;
+		String matchId;
+		//int matchId;
+		int video = 0;
 	}
 
 	private class TournamentByAthletes{
@@ -313,7 +355,9 @@ public class TennisReaderServlet extends HttpServlet{
 	private class CC{
 		String player1;
 		String player2;
-		int matchId;
+		//int matchId;
+		String matchId;
+		int video = 0;
 	}
 	
 	private class AAA{
@@ -329,7 +373,9 @@ public class TennisReaderServlet extends HttpServlet{
 	private class CCC{
 		String player1;
 		String player2;
-		int matchId;
+		//int matchId;
+		String matchId;
+		int video = 0;
 	}
 	
 	private class Tournament{
@@ -360,13 +406,20 @@ public class TennisReaderServlet extends HttpServlet{
 		String firstname2;
 		String lastname2;
 		List <TennisSet> sets = new ArrayList <TennisSet>();
-		int matchId = 0;
+		//int matchId = 0;
+		String matchId;
 		String date;
 		String tournament;
+		String round;
 		int year;
 		int maxRally;
 		List <String> matchReport = new ArrayList <String> ();
 		List <CriticalMoment> CMs = new ArrayList <CriticalMoment> ();
+		String matchURl = "";
+		String abbr1;
+		String abbr2;
+		boolean lefty1 = false;
+		boolean lefty2 = false;
 	}
 	
 	private class TennisSet {
@@ -399,6 +452,7 @@ public class TennisReaderServlet extends HttpServlet{
 		int game2;
 		int host;
 		int guest;
+		String id;
 		String date;
 		String tournament;
 		String round;
@@ -434,7 +488,7 @@ public class TennisReaderServlet extends HttpServlet{
 			int order = 0;
 			currentGame.start = 1;
 			int maxRally = 1;
-			int matchId = 0;
+			//int matchId = 0;
 			while(line!=null){
 				//System.out.println("order="+order);
 				lineNum++;
@@ -442,8 +496,10 @@ public class TennisReaderServlet extends HttpServlet{
 				if(obj.seq == 1){
 					if(lineNum == 1){
 						currentMatch = new TennisMatch();
-						currentMatch.matchId = matchId;
-						matchId++;
+						currentMatch.matchId = obj.id;
+						currentMatch.round = obj.round;
+						//currentMatch.matchId = matchId;
+						//matchId++;
 						currentMatch.date = obj.date.substring(0,4)+"-"+obj.date.substring(4,6)+"-"+obj.date.substring(6,8);
 						currentMatch.player1 = obj.hostFirstName+" "+ obj.hostLastName;
 						currentMatch.player2 = obj.guestFirstName+" "+ obj.guestLastName;
@@ -452,7 +508,11 @@ public class TennisReaderServlet extends HttpServlet{
 						currentMatch.firstname2 = obj.guestFirstName;
 						currentMatch.lastname2 = obj.guestLastName;
 						currentMatch.tournament = obj.tournament;
+						currentMatch.abbr1 = currentMatch.firstname1.charAt(0)+""+currentMatch.lastname1.charAt(0);
+						currentMatch.abbr2 = currentMatch.firstname2.charAt(0)+""+currentMatch.lastname2.charAt(0);
 						currentMatch.year = Integer.valueOf(obj.date.substring(0,4));
+						currentMatch.lefty1 = (lefty.contains(currentMatch.firstname1+" "+currentMatch.lastname1)) ? true:false;
+						currentMatch.lefty2 = (lefty.contains(currentMatch.firstname2+" "+currentMatch.lastname2)) ? true:false;
 						line = br.readLine();
 						one = obj.one;
 						sec = obj.sec;
@@ -553,8 +613,10 @@ public class TennisReaderServlet extends HttpServlet{
 							matches.add(currentMatch);
 							currentMatch.maxRally = maxRally;
 							currentMatch = new TennisMatch();
-							currentMatch.matchId = matchId;
-							matchId++;
+							//currentMatch.matchId = matchId;
+							currentMatch.matchId = obj.id;
+							currentMatch.round = obj.round;
+							//matchId++;
 							maxRally = 1;
 							currentMatch.date = obj.date.substring(0,4)+"-"+obj.date.substring(4,6)+"-"+obj.date.substring(6,8);
 							currentMatch.player1 = obj.hostFirstName+" "+ obj.hostLastName;
@@ -563,8 +625,12 @@ public class TennisReaderServlet extends HttpServlet{
 							currentMatch.lastname1 = obj.hostLastName;
 							currentMatch.firstname2 = obj.guestFirstName;
 							currentMatch.lastname2 = obj.guestLastName;
+							currentMatch.abbr1 = currentMatch.firstname1.charAt(0)+""+currentMatch.lastname1.charAt(0);
+							currentMatch.abbr2 = currentMatch.firstname2.charAt(0)+""+currentMatch.lastname2.charAt(0);
 							currentMatch.tournament = obj.tournament;
 							currentMatch.year = Integer.valueOf(obj.date.substring(0,4));
+							currentMatch.lefty1 = (lefty.contains(currentMatch.firstname1+" "+currentMatch.lastname1)) ? true:false;
+							currentMatch.lefty2 = (lefty.contains(currentMatch.firstname2+" "+currentMatch.lastname2)) ? true:false;
 						}
 						if(currentSet.host > currentSet.guest){
 							currentSet.winner = 0;
@@ -618,11 +684,17 @@ public class TennisReaderServlet extends HttpServlet{
 	public void parse(ALine obj, String line){
 		String [] properties = line.split(",");
 		String [] matchInfo = properties[0].split("-");
+		obj.id = properties[0];
 		obj.date = matchInfo[0];
 		//obj.tournament = matchInfo[2]+obj.date.substring(0,4);
 		obj.tournament = matchInfo[2].replaceAll("_"," ");
 		
 		obj.round = matchInfo[3];
+		switch (obj.round){
+			case "F" : obj.round = "Final";break;
+			case "SF": obj.round = "Semi Final";break;
+			case "QF": obj.round = "Quarter Final";break;
+		}
 		obj.hostFirstName = matchInfo[4].split("_")[0];
 		obj.hostLastName = matchInfo[4].split("_")[1];
 		obj.guestFirstName = matchInfo[5].split("_")[0];
@@ -712,6 +784,19 @@ public class TennisReaderServlet extends HttpServlet{
 		String hoffset="";
 		String moffset="";
 		String soffset="";
+		int returnDepth = 0;
+		int court11 = 0;
+		int court12 = 0;
+		int court13 = 0;
+		int court21 = 0;
+		int court22 = 0;
+		int court23 = 0; 
+		int return11 = 0;
+		int return12 = 0;
+		int return13 = 0;
+		int return21 = 0;
+		int return22 = 0;
+		int return23 = 0;
 	}
 	
 	public void interpret(String one, String sec, TennisScore score, TennisMatch currentMatch){
@@ -748,10 +833,10 @@ public class TennisReaderServlet extends HttpServlet{
 		
 		String comments = "";
 		if(score.serving == 0){
-			comments += currentMatch.player1 + " serves.";
+			comments += currentMatch.abbr1 + " serves.";
 		}
 		else{
-			comments += currentMatch.player2 + " serves.";		
+			comments += currentMatch.abbr2 + " serves.";		
 		}
 		if(firstServingFault){
 			comments+="1st serve ";
@@ -764,8 +849,8 @@ public class TennisReaderServlet extends HttpServlet{
 			switch(one.charAt(one.length()-1)){
 				case 'n': comments+="net";break;
 				case 'w': comments+="wide";break;
-				case 'd': comments+="long";break;
-				case 'x': comments+="wide and long";break;
+				case 'd': comments+="deep";break;
+				case 'x': comments+="wide and deep";break;
 			}
 			comments+="). ";
 		}
@@ -796,13 +881,13 @@ public class TennisReaderServlet extends HttpServlet{
 					if(i<chs.length && (chs[i] == 'n' || chs[i] == 'w' || chs[i] == 'd' || chs[i] =='x')){
 						i++;
 						//if(firstServingFault) {
-							doubleFaults = true;
+						doubleFaults = true;
 						comments += ", fault (";
 						switch(one.charAt(one.length()-1)){
 							case 'n': comments+="net";break;
 							case 'w': comments+="wide";break;
-							case 'd': comments+="long";break;
-							case 'x': comments+="wide and long";break;
+							case 'd': comments+="deep";break;
+							case 'x': comments+="wide and deep";break;
 						}
 						comments += "), double fault. ";
 						//}
@@ -818,10 +903,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'f': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.fcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.fcount2++;
 						serving = true;
 					}
@@ -830,10 +917,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'b': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.bcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.bcount2++;
 						serving = true;
 					}
@@ -842,10 +931,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 's': 	
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.scount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.scount2++;
 						serving = true;
 					}
@@ -854,10 +945,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'r': 	
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.rcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.rcount2++;
 						serving = true;
 					}
@@ -866,10 +959,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'v': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.vcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.vcount2++;
 						serving = true;
 					}
@@ -878,10 +973,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'z': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.zcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.zcount2++;
 						serving = true;
 					}
@@ -890,10 +987,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'l': 	
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.lcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.lcount2++;
 						serving = true;
 					}
@@ -902,10 +1001,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'm': 	
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.mcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.mcount2++;
 						serving = true;
 					}
@@ -914,10 +1015,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'o': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.ocount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.ocount2++;
 						serving = true;
 					}
@@ -926,10 +1029,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'p': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.pcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.pcount2++;
 						serving = true;
 					}
@@ -938,10 +1043,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'u': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.ucount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.ucount2++;
 						serving = true;
 					}
@@ -950,10 +1057,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'y': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.ycount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.ycount2++;
 						serving = true;
 					}
@@ -962,10 +1071,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'h': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.hcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.hcount2++;
 						serving = true;
 					}
@@ -974,10 +1085,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'i': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.icount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.icount2++;
 						serving = true;
 					}
@@ -986,10 +1099,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'j': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.jcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.jcount2++;
 						serving = true;
 					}
@@ -998,10 +1113,12 @@ public class TennisReaderServlet extends HttpServlet{
 				case 'k': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.kcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.kcount2++;
 						serving = true;
 					}
@@ -1010,35 +1127,117 @@ public class TennisReaderServlet extends HttpServlet{
 				case 't': 
 					rally ++;
 					if(serving) {
+						comments += (currentMatch.abbr1+" ");
 						score.tcount1++;
 						serving = false;
 					}
 					else{
+						comments += (currentMatch.abbr2+" ");
 						score.tcount2++;
 						serving = true;
 					}
 					comments += "trick shots; ";
 					break;
-				case 'n': faultReason = 1; break;
-				case 'w': faultReason = 2; break;
-				case 'd': faultReason = 3; break;
-				case 'x': faultReason = 4; break;
-				case '1':
-				case '2':
-				case '3':
-				case '7':
-				case '8':
-				case '9': 
-				case '+':
-				case '-':
-				case '=': break;
+				case 'n': faultReason = 1; comments += "fault(net) ";break;
+				case 'w': faultReason = 2; comments += "fault(wide) ";break;
+				case 'd': faultReason = 3; comments += "fault(deep) ";break;
+				case 'x': faultReason = 4; comments += "fault(wide and deep) ";break;
+				case '1': 
+					if(serving){
+						comments += "Return to "+currentMatch.abbr1+"'s ";
+						if(currentMatch.lefty1){
+							comments += " backhand;";
+							score.return22++;
+						}
+						else{
+							comments += " forehand;";
+							score.return21++;
+						}
+					}
+					else{
+						comments += "Return to "+currentMatch.abbr2+"'s ";
+						if(currentMatch.lefty2){
+							comments += " backhand;";
+							score.return12++;
+						}
+						else{
+							comments += " forehand;";
+							score.return11++;
+						}
+					}
+					break;
+				case '3': comments += "";
+					if(serving){
+						comments += "Return to "+currentMatch.abbr1+"'s ";
+						if(currentMatch.lefty1){
+							score.return21++;
+							comments += " forehand;";
+						}
+						else{
+							comments += " backhand;";
+							score.return22++;
+						}
+					}
+					else{
+						comments += "Return to "+currentMatch.abbr2+"'s ";
+						if(currentMatch.lefty2){
+							comments += " forehand;";
+							score.return11++;
+						}
+						else{
+							comments += " backhand;";
+							score.return12++;
+						}
+					}
+					break;
+				case '2': 
+					if(serving){
+						comments += "Return to "+currentMatch.abbr1+"'s ";
+						score.return23++;
+					}
+					else{
+						comments += "Return to "+currentMatch.abbr2+"'s ";
+						score.return13++;
+					}
+					comments += "the middle;";
+					break;
+				case '7': comments += "Shallow service return;";score.returnDepth = 1; break;
+				case '8': comments += "Moderately deep service return;";score.returnDepth = 2;break;
+				case '9': comments += "Very deep service return;";score.returnDepth = 3;break;
+				case '+': 
+					comments += "approach shots;";
+					if(serving){
+						score.court21 = 1;	
+					}
+					else{
+						score.court11 = 1;
+					}
+					break;
+				case '-': 
+					comments += "Hit on the net;";
+					if(serving){
+						score.court22 = 1;	
+					}
+					else{
+						score.court12 = 1;
+					}
+					break;
+				case '=': 
+					comments += "Hit on the baseline";
+					if(serving){
+						score.court23 = 1;	
+					}
+					else{
+						score.court13 = 1;
+					}
+					break;
 				case '*': comments += "winner;";error = 3; break;
 				case '#': comments += "forced error;";error = 2; break;
 				case '@': comments += "unforced error;";error = 1; break;
-				default:  System.out.println("error code" + chs[i-1]);
+				//default:  System.out.println("error code" + chs[i-1]);
 			}
 		}
-		comments += rally+"-shot rally";
+		comments += rally+"-shot rally;";
 		score.firstServingFault = firstServingFault;
 		score.doubleFaults = doubleFaults;
 		score.ace = ace;
@@ -1052,19 +1251,33 @@ public class TennisReaderServlet extends HttpServlet{
 	public void detectCriticalMoment() throws ServletException {
 		int num = 0;
 		try{
-			BufferedReader br = new BufferedReader(new FileReader(getServletContext().getRealPath("/WEB-INF/m922.txt")));
+			BufferedReader br = new BufferedReader(new FileReader(getServletContext().getRealPath("/WEB-INF/matchlist.txt")));
+			BufferedReader matchdata = null;
+			boolean flag = false;
+			String str = br.readLine();
+			HashSet <String> matchfiles = new HashSet <String> ();
+			while(str!=null){
+				matchfiles.add(str);
+				str = br.readLine();
+			}
 			TennisScore score = null;
 			for(int i = 0; i<matches.size();i++){
+				if(matchfiles.contains(matches.get(i).matchId)){
+				//if(matchfiles.contains(Integer.valueOf(matches.get(i).matchId).toString())){
+					matchdata = new BufferedReader(new FileReader(getServletContext().getRealPath("/WEB-INF/matches/"+matches.get(i).matchId+".txt")));
+					matches.get(i).matchURl = matchdata.readLine().trim();
+					flag = true;
+				}
 				for(int j=0; j<matches.get(i).sets.size();j++){
 					for(int k=0; k<matches.get(i).sets.get(j).games.size();k++){
 						score = null;
 						for(int l=0;l<matches.get(i).sets.get(j).games.get(k).scores.size();l++){
 							TennisGame game = matches.get(i).sets.get(j).games.get(k);
-							if(matches.get(i).matchId == 922){
-								num ++;
-								System.out.println("num="+num);								
-								String tmp = br.readLine().trim();
-								System.out.println("["+tmp+"]");
+							if(flag){
+								//num ++;
+								//System.out.println("num="+num);								
+								String tmp = matchdata.readLine().trim();
+								//System.out.println("["+tmp+"]");
 								String offset [] = tmp.trim().split(":");
 								game.scores.get(l).hoffset = offset[0];
 								game.scores.get(l).moffset = offset[1];
@@ -1131,6 +1344,10 @@ public class TennisReaderServlet extends HttpServlet{
 							score = cur_score ;
 						}
 					}
+				}
+				if(flag){
+					matchdata.close();
+					flag = false;
 				}
 			}
 		}
